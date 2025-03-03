@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.OtpPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:OptMobile.Retailer.Control"
+    xmlns:helpers="clr-namespace:OptMobile.Retailer.Helpers"
+    xmlns:vm="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="vm:OtpViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <RadialGradientBrush>
+            <GradientStop Offset="0" Color="SkyBlue" />
+            <GradientStop Offset="1" Color="Purple" />
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="*">
+        <VerticalStackLayout VerticalOptions="End">
+            <VerticalStackLayout VerticalOptions="End">
+                <Label
+                    Margin="20,0,10,30"
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    Text="Please enter your OTP"
+                    TextColor="{StaticResource White}" />
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Border
+                        Margin="10"
+                        BackgroundColor="White"
+                        Style="{DynamicResource EntryBorderStyle}">
+                        <HorizontalStackLayout HorizontalOptions="Center">
+                            <control:BorderLessEntry
+                                x:Name="txtOne"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Telephone"
+                                MaxLength="1"
+                                Style="{DynamicResource BasicEntryStyle}"
+                                Text="{Binding FirstNumber}"
+                                TextChanged="OtpEntry_TextChanged"
+                                WidthRequest="40" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Border
+                        Margin="10"
+                        BackgroundColor="White"
+                        Style="{DynamicResource EntryBorderStyle}">
+                        <HorizontalStackLayout HorizontalOptions="Center">
+                            <control:BorderLessEntry
+                                x:Name="txtTwo"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Telephone"
+                                MaxLength="1"
+                                Style="{DynamicResource BasicEntryStyle}"
+                                Text="{Binding SecondNumber}"
+                                TextChanged="OtpEntry_TextChanged"
+                                WidthRequest="40" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Border
+                        Margin="10"
+                        BackgroundColor="White"
+                        Style="{DynamicResource EntryBorderStyle}">
+                        <HorizontalStackLayout HorizontalOptions="Center">
+                            <control:BorderLessEntry
+                                x:Name="txtThree"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Telephone"
+                                MaxLength="1"
+                                Style="{DynamicResource BasicEntryStyle}"
+                                Text="{Binding ThirdNumber}"
+                                TextChanged="OtpEntry_TextChanged"
+                                WidthRequest="40" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Border
+                        Margin="10"
+                        BackgroundColor="White"
+                        Style="{DynamicResource EntryBorderStyle}">
+                        <HorizontalStackLayout HorizontalOptions="Center">
+                            <control:BorderLessEntry
+                                x:Name="txtFour"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Telephone"
+                                MaxLength="1"
+                                ReturnCommand="{Binding SubmitOtpCommand}"
+                                Style="{DynamicResource BasicEntryStyle}"
+                                Text="{Binding FourthNumber}"
+                                TextChanged="OtpEntry_TextChanged"
+                                WidthRequest="40" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </HorizontalStackLayout>
+
+                <Button
+                    Margin="10"
+                    BackgroundColor="OrangeRed"
+                    Command="{Binding SubmitOtpCommand}"
+                    Text="Submit" />
+
+                <Label
+                    x:Name="lblCancel"
+                    Margin="0,0,0,10"
+                    FontFamily="PoppinsBold"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsCancelVisible}"
+                    Text="Cancel"
+                    TextColor="{StaticResource White}"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CancelOtpCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <HorizontalStackLayout
+                    Margin="0,0,0,250"
+                    HorizontalOptions="CenterAndExpand"
+                    Spacing="10">
+                    <Label
+                        x:Name="lblResendCode"
+                        FontFamily="PoppinsBold"
+                        IsVisible="{Binding IsResendCodeVisible}"
+                        Text="Resend code"
+                        TextColor="{StaticResource White}"
+                        TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ResendOtpCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label
+                        x:Name="lblOtpTimer"
+                        FontFamily="PoppinsBold"
+                        IsVisible="{Binding IsOtpTimerVisible}"
+                        Text="{Binding ResendCodeTimerText}"
+                        TextColor="{StaticResource White}" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

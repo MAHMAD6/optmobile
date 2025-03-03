@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="OptMobile.Retailer.Views.Components.NoInternetContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid
+        Padding="30"
+        HorizontalOptions="CenterAndExpand"
+        RowDefinitions="Auto,*"
+        RowSpacing="10"
+        VerticalOptions="CenterAndExpand">
+        <Image Aspect="Fill" Source="dog" />
+        <VerticalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="CenterAndExpand"
+            Spacing="10"
+            VerticalOptions="CenterAndExpand">
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="OOPS! NO INTERNET"
+                TextColor="{AppThemeBinding Light={x:StaticResource BlackColor},
+                                            Dark={x:StaticResource DarkBlackColor}}" />
+            <Label Text="Please check your network connection" TextColor="{AppThemeBinding Light={x:StaticResource BlackColor}, Dark={x:StaticResource DarkBlackColor}}" />
+            <Button BackgroundColor="Orange" Text="Try Again" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

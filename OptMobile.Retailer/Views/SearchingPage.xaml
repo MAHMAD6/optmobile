@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.SearchingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="SearchingPage">
+    <VerticalStackLayout Margin="15" Spacing="25">
+        <!--  Search Bar  -->
+        <Frame
+            Padding="0"
+            BackgroundColor="White"
+            BorderColor="#EAEBEC"
+            CornerRadius="6"
+            HasShadow="False"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="Center">
+            <HorizontalStackLayout
+                Padding="8,0"
+                HorizontalOptions="FillAndExpand"
+                Spacing="8"
+                VerticalOptions="Center">
+                <ImageButton
+                    BackgroundColor="Transparent"
+                    HeightRequest="20"
+                    IsEnabled="False"
+                    Source="search.png"
+                    WidthRequest="20" />
+                <!--<Button>
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <Image Source="save_icon.png" WidthRequest="20" HeightRequest="20"/>
+                        <Label Text="Save" TextColor="White" FontSize="16"/>
+                    </StackLayout>
+                </Button>-->
+
+
+                <Entry
+                    BackgroundColor="Transparent"
+                    FontSize="16"
+                    HeightRequest="48"
+                    HorizontalOptions="FillAndExpand"
+                    Placeholder="Search"
+                    TextColor="Black"
+                    VerticalOptions="Center"
+                    Visual="Material" />
+            </HorizontalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

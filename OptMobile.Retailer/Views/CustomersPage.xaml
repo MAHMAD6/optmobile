@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.CustomersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:OptMobile.Retailer.Control"
+    xmlns:helper="clr-namespace:OptMobile.Retailer.Helpers"
+    xmlns:model="clr-namespace:OptMobile.Retailer.Models"
+    xmlns:searchHandler="clr-namespace:OptMobile.Retailer.Handlers"
+    xmlns:viewModel="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="viewModel:CustomerViewModel"
+    BackgroundColor="{StaticResource PageBackground}"
+    Shell.TitleColor="{StaticResource White}">
+
+    <!--<Shell.SearchHandler>
+        <searchHandler:CustomerSearchHandler
+            ClearIcon="close"
+            DisplayMemberName="PartyName"
+            NavigationRoute="CustomerInvoicePage"
+            Parties="{x:Static viewModel:CustomerViewModel.SearchParties}"
+            Placeholder="Search parties"
+            QueryIcon="search"
+            SearchBoxVisibility="Collapsible"
+            ShowsResults="True">
+            <searchHandler:CustomerSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="model:PartyMaster">
+                    <Frame BorderColor="White">
+                        <HorizontalStackLayout Spacing="5">
+                            <Label FontSize="Medium" Text="{Binding party_name}" />
+                        </HorizontalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </searchHandler:CustomerSearchHandler.ItemTemplate>
+        </searchHandler:CustomerSearchHandler>
+    </Shell.SearchHandler>-->
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid
+        Margin="10,0,10,0"
+        RowDefinitions="Auto,*"
+        RowSpacing="10">
+        <Grid Margin="5" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout>
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label
+                        Grid.Column="0"
+                        Margin="0,10,10,10"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Text="Parties" />
+                    <Border
+                        Grid.Column="1"
+                        BackgroundColor="White"
+                        HeightRequest="40"
+                        StrokeShape="RoundRectangle 20"
+                        StrokeThickness="0"
+                        WidthRequest="40">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CartPageNavigationCommand}" NumberOfTapsRequired="1" />
+                        </Border.GestureRecognizers>
+                        <Image
+                            HeightRequest="25"
+                            Source="cart.png"
+                            WidthRequest="25" />
+                    </Border>
+                </Grid>
+                <Frame Margin="0,5,0,0" Style="{x:StaticResource TextBoxFrameStyle}">
+                    <control:BorderLessEntry
+                        Margin="5,5"
+                        ClearButtonVisibility="WhileEditing"
+                        Placeholder="Search"
+                        PlaceholderColor="{AppThemeBinding Light={x:StaticResource Gray400},
+                                                           Dark={x:StaticResource Gray400}}"
+                        ReturnType="Next"
+                        Text="{Binding SearchQuery}" />
+                </Frame>
+            </VerticalStackLayout>
+        </Grid>
+        <ActivityIndicator
+            Grid.Row="2"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center" />
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView
+                BackgroundColor="Transparent"
+                IsVisible="{Binding IsDataLoaded}"
+                ItemsSource="{Binding FilteredParties}"
+                SelectionMode="Single"
+                VerticalOptions="Center">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:PartyMaster">
+                        <Border
+                            Margin="5"
+                            Padding="5"
+                            BackgroundColor="{StaticResource White}"
+                            StrokeShape="RoundRectangle 5"
+                            StrokeThickness="0">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:CustomerViewModel}}, Path=PartyInvoiceCommand}"
+                                    CommandParameter="{Binding .}"
+                                    NumberOfTapsRequired="1" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnSpacing="5" RowSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    HorizontalTextAlignment="Start"
+                                    Text="{Binding party_name}"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,0,10"
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    HorizontalOptions="Start"
+                                    Text="{Binding city}"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    HeightRequest="30"
+                                    HorizontalOptions="End"
+                                    Text="23455.00" />
+
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    HorizontalTextAlignment="Start"
+                                    Text="Customer"
+                                    TextColor="Gray"
+                                    VerticalOptions="Center" />
+
+                                <HorizontalStackLayout
+                                    Grid.Row="2"
+                                    Grid.Column="2"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        Margin="0,0,3,0"
+                                        FontFamily="FontAwesomeSolid"
+                                        FontSize="16"
+                                        Text="&#xf017;"
+                                        TextColor="Gray" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="LatoRegular"
+                                        FontSize="12"
+                                        HorizontalOptions="End"
+                                        Text="Send Reminder"
+                                        TextColor="Gray" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

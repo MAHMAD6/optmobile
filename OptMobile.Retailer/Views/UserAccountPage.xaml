@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.UserAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="vm:UserAccountViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <Grid BackgroundColor="White">
+        <VerticalStackLayout
+            Padding="30"
+            BackgroundColor="{AppThemeBinding Light={x:StaticResource White},
+                                              Dark={x:StaticResource DarkWhite}}"
+            Spacing="30">
+            <Border HeightRequest="100" WidthRequest="100">
+                <Image Aspect="Fill" Source="user.png" />
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="50" />
+                </Border.StrokeShape>
+            </Border>
+            <VerticalStackLayout Spacing="10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HorizontalTextAlignment="Center"
+                    Text="Welcome"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    HorizontalTextAlignment="Center"
+                    Text="User Name"
+                    TextColor="{AppThemeBinding Light={x:StaticResource OptCardLight},
+                                                Dark={x:StaticResource OptCardDark}}"
+                    VerticalTextAlignment="Center" />
+
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="30">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image
+                        HeightRequest="20"
+                        Source="home.png"
+                        WidthRequest="20" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="14"
+                        Text="Home" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image
+                        HeightRequest="20"
+                        Source="cart.png"
+                        WidthRequest="20" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="14"
+                        Text="Cart" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image
+                        HeightRequest="20"
+                        Source="search.png"
+                        WidthRequest="20" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="14"
+                        Text="Search Products" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image
+                        HeightRequest="20"
+                        Source="location.png"
+                        WidthRequest="20" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="14"
+                        Text="Address" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image
+                        HeightRequest="20"
+                        Source="logout.png"
+                        WidthRequest="20" />
+
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        Text="Logout">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UserLogoutCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="End">
+            <Image
+                HeightRequest="20"
+                Source="version.png"
+                VerticalOptions="Start"
+                WidthRequest="20" />
+            <Label
+                Margin="5,0,0,20"
+                BackgroundColor="Transparent"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="v1.0.2"
+                TextColor="{StaticResource OptCardDark}" />
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

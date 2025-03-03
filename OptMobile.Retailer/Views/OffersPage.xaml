@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.OffersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False">
+    <VerticalStackLayout>
+        <Grid ColumnDefinitions="*,Auto">
+            <Label
+                Grid.Column="0"
+                Margin="0,10,10,10"
+                FontAttributes="Bold"
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="Offers" />
+            <Border
+                Grid.Column="1"
+                HeightRequest="40"
+                StrokeShape="RoundRectangle 20"
+                StrokeThickness="0"
+                WidthRequest="40">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CartPageNavigationCommand}" NumberOfTapsRequired="1" />
+                </Border.GestureRecognizers>
+                <Image
+                    HeightRequest="25"
+                    Source="cart.png"
+                    WidthRequest="25" />
+            </Border>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

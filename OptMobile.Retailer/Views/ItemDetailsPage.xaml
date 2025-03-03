@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.ItemDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:OptMobile.Retailer.Converters"
+    xmlns:local="clr-namespace:OptMobile.Retailer.Views.Components"
+    xmlns:models="clr-namespace:OptMobile.Retailer.Models"
+    xmlns:syncfusion="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+    xmlns:viewmodels="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="viewmodels:ItemDetailsViewModel"
+    BackgroundColor="{StaticResource PageBackground}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
+        <Grid Margin="10,5,10,5" ColumnDefinitions="Auto,*,Auto">
+            <Border
+                BackgroundColor="White"
+                HeightRequest="40"
+                StrokeShape="RoundRectangle 20"
+                StrokeThickness="0"
+                WidthRequest="40">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ClosePageCommand}" NumberOfTapsRequired="1" />
+                </Border.GestureRecognizers>
+                <Image
+                    HeightRequest="20"
+                    Source="back.png"
+                    WidthRequest="20" />
+            </Border>
+            <Label
+                Grid.Column="1"
+                Margin="0,10,10,10"
+                FontAttributes="Bold"
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="Details" />
+            <Border
+                Grid.Column="2"
+                BackgroundColor="White"
+                HeightRequest="40"
+                StrokeShape="RoundRectangle 20"
+                StrokeThickness="0"
+                WidthRequest="40">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CartPageNavigationCommand}" NumberOfTapsRequired="1" />
+                </Border.GestureRecognizers>
+                <Image
+                    HeightRequest="25"
+                    Source="cart.png"
+                    WidthRequest="25" />
+            </Border>
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Padding="10"
+            BackgroundColor="{StaticResource White}"
+            HorizontalOptions="FillAndExpand"
+            StrokeShape="RoundRectangle 1"
+            StrokeThickness="0">
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="*,Auto"
+                RowDefinitions="Auto,Auto,Auto,Auto"
+                RowSpacing="10">
+                <!--  Image Indicator  -->
+                <Image
+                    Grid.ColumnSpan="2"
+                    Aspect="AspectFit"
+                    HeightRequest="150"
+                    HorizontalOptions="Center"
+                    Source="{Binding Item.image_url}" />
+
+                <!--  Item Details  -->
+                <Label
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HorizontalOptions="Start"
+                    Text="{Binding Item.item_name}"
+                    TextColor="Black" />
+
+                <Label
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    FontSize="14"
+                    HorizontalOptions="Start"
+                    Text="{Binding Item.packing}"
+                    TextColor="Gray" />
+                <HorizontalStackLayout Grid.Row="3">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="{Binding Item.Ptr, StringFormat='Price: {0}'}"
+                        TextColor="Green" />
+                    <Label
+                        Margin="10,0,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        HorizontalOptions="Start"
+                        Text="{Binding Item.mrp}"
+                        TextColor="Green"
+                        TextDecorations="Strikethrough"
+                        VerticalOptions="End" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    VerticalOptions="Center">
+                    <ImageButton
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=DecrementPurchaseQuantityCommand}"
+                        CommandParameter="{Binding Item}"
+                        HeightRequest="30"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding Item.IsMinusButtonVisible}"
+                        Source="minuscart.png"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalOptions="CenterAndExpand"
+                        HorizontalTextAlignment="Center"
+                        IsVisible="{Binding Item.IsMinusButtonVisible}"
+                        Text="{Binding Item.Qty}"
+                        VerticalOptions="Center" />
+                    <ImageButton
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=IncrementPurchaseQuantityCommand}"
+                        CommandParameter="{Binding Item}"
+                        HeightRequest="30"
+                        HorizontalOptions="End"
+                        Source="pluscart.png"
+                        WidthRequest="30" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <VerticalStackLayout>
+                <Grid>
+                    <syncfusion:SfTabView IndicatorBackground="{StaticResource OptCardDark}" TabBarBackground="White">
+                        <syncfusion:SfTabItem Header="Detail">
+                            <ContentView HeightRequest="210">
+                                <ScrollView Orientation="Vertical">
+                                    <VerticalStackLayout Padding="10">
+                                        <Label FontFamily="PoppinsBold" Text="Description" />
+                                        <Label Margin="10,0,0,0" Text="This is description block for selected item" />
+                                        <Label FontFamily="PoppinsBold" Text="Ingredients" />
+                                        <Label Margin="10,0,0,0" Text="This is block of ingredients" />
+                                        <Label FontFamily="PoppinsBold" Text="How to use" />
+                                        <Label Margin="10,0,0,0" Text="Take this tablet with water after meals as directed by a physician" />
+                                        <!--<Label FontFamily="PoppinsBold" Text="FAQ" />-->
+                                    </VerticalStackLayout>
+                                </ScrollView>
+                            </ContentView>
+                        </syncfusion:SfTabItem>
+                        <syncfusion:SfTabItem Header="Substitute">
+                            <ContentView HeightRequest="220">
+                                <ScrollView Orientation="Vertical">
+                                    <local:ItemSubstituteView Products="{Binding SelectedProduct}" />
+                                </ScrollView>
+                            </ContentView>
+                        </syncfusion:SfTabItem>
+                        <syncfusion:SfTabItem Header="Variant">
+                            <ContentView HeightRequest="220">
+                                <ScrollView Orientation="Vertical">
+                                    <local:ItemVariantView Products="{Binding SelectedProduct}" />
+                                </ScrollView>
+                            </ContentView>
+                        </syncfusion:SfTabItem>
+                    </syncfusion:SfTabView>
+                </Grid>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

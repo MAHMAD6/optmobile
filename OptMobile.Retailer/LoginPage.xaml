@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:OptMobile.Retailer.Control"
+    xmlns:helpers="clr-namespace:OptMobile.Retailer.Helpers"
+    xmlns:vm="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="vm:LoginViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <RadialGradientBrush>
+            <GradientStop Offset="0" Color="SkyBlue" />
+            <GradientStop Offset="1" Color="Purple" />
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="*,*">
+        <VerticalStackLayout VerticalOptions="Center">
+            <Image Source="logo.png" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1" VerticalOptions="End">
+            <Label
+                Margin="20"
+                FontAttributes="Bold"
+                FontSize="Title"
+                HorizontalOptions="Start"
+                Text="Welcome"
+                TextColor="{StaticResource White}" />
+            <Label
+                Margin="20,0,0,10"
+                Text="Manage your business"
+                TextColor="{StaticResource White}" />
+            <Label
+                Margin="20,0,10,30"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                Text="seamlessly and intuitively"
+                TextColor="{StaticResource White}" />
+            <Border
+                Margin="10"
+                BackgroundColor="White"
+                Style="{DynamicResource EntryBorderStyle}">
+                <HorizontalStackLayout Spacing="10">
+                    <Image Style="{DynamicResource ImageEntryIconStyle}">
+                        <Image.Source>
+                            <FontImageSource
+                                FontFamily="IconFontTypes"
+                                Glyph="{x:Static helpers:IconFont.Login}"
+                                Color="{DynamicResource Black}" />
+                        </Image.Source>
+                    </Image>
+                    <control:BorderLessEntry
+                        x:Name="txtMobile"
+                        FontSize="16"
+                        Keyboard="Telephone"
+                        MaxLength="10"
+                        Placeholder="Mobile number"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Style="{DynamicResource BasicEntryStyle}"
+                        Text="{Binding MobileNumber}"
+                        WidthRequest="300" />
+                </HorizontalStackLayout>
+            </Border>
+            <Button
+                Margin="10"
+                BackgroundColor="OrangeRed"
+                Command="{Binding LoginCommand}"
+                Text="Sign in" />
+            <HorizontalStackLayout
+                Margin="0,0,0,70"
+                HorizontalOptions="CenterAndExpand"
+                Spacing="10">
+                <Label
+                    FontFamily="PoppinsBold"
+                    Text="New User?"
+                    TextColor="{StaticResource White}" />
+                <Label
+                    FontFamily="PoppinsBold"
+                    Text="Create an account"
+                    TextColor="{StaticResource White}"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CreateAccountCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

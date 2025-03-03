@@ -1,0 +1,1554 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.CreateInvoicePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bottomsheet="http://pluginmauibottomsheet.com"
+    xmlns:convert="clr-namespace:OptMobile.Retailer.Converters"
+    xmlns:helpers="clr-namespace:OptMobile.Retailer.Helpers"
+    xmlns:models="clr-namespace:OptMobile.Retailer.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="viewmodels:CreateInvoiceViewModel"
+    BackgroundColor="{StaticResource Secondary}"
+    Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convert:ExpandCollapseConverter x:Key="ExpandCollapseConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid BackgroundColor="#F0EDFC" RowDefinitions="auto,auto,auto,auto,auto,auto,auto,*">
+
+            <!--#region Header-->
+            <Grid
+                Grid.Row="0"
+                Margin="0,0,0,0"
+                Padding="0"
+                BackgroundColor="{StaticResource PageBackground}"
+                ColumnDefinitions="auto,*,auto"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Center">
+                <Border
+                    BackgroundColor="White"
+                    HeightRequest="40"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                    <Image
+                        HeightRequest="20"
+                        Source="back.png"
+                        WidthRequest="20" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Margin="23,10,10,10"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Start"
+                    Text="Create Bill / Invoice "
+                    VerticalOptions="Center" />
+                <ImageButton
+                    Grid.Column="2"
+                    Margin="0,0,5,0"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=InvoiceSettingsCommand}"
+                    HeightRequest="25"
+                    HorizontalOptions="End"
+                    Source="createinvoicesettingsicon.png"
+                    VerticalOptions="Center"
+                    WidthRequest="25" />
+
+            </Grid>
+            <!--#endregion-->
+
+            <!--#region Index-->
+            <Grid
+                Grid.Row="1"
+                Margin="0,10,0,10"
+                Padding="10,8,8,8"
+                BackgroundColor="{StaticResource PageBackground}"
+                ColumnDefinitions="*,*"
+                RowDefinitions="*,*">
+                <Label Text="Invoice #1004" TextColor="{DynamicResource PrimaryDark}" />
+                <Label
+                    Grid.Row="1"
+                    Text="20 Feb 2025"
+                    TextColor="Black" />
+                <Button
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Background="{DynamicResource PageBackground}"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=InvoiceEditCommand}"
+                    FontAttributes="Bold"
+                    HorizontalOptions="End"
+                    Text="Edit"
+                    TextColor="{DynamicResource Primary}"
+                    VerticalOptions="Center" />
+            </Grid>
+
+            <bottomsheet:BottomSheet
+                Grid.RowSpan="10"
+                CurrentState="Medium"
+                HeightRequest="100"
+                IsCancelable="True"
+                IsDraggable="True"
+                IsOpen="{Binding IsEditIndexOpen}"
+                States="Medium">
+                <bottomsheet:BottomSheet.Content>
+                    <bottomsheet:BottomSheetContent>
+                        <bottomsheet:BottomSheetContent.ContentTemplate>
+                            <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                                <Grid
+                                    Grid.Row="10"
+                                    Margin="0,10,0,0"
+                                    Padding="10"
+                                    BackgroundColor="White"
+                                    ColumnDefinitions="*,*"
+                                    RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto,auto">
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,0,0,15"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="18"
+                                        HorizontalOptions="Start"
+                                        Text="Edit Invoice Date and Number"
+                                        VerticalOptions="Center" />
+                                    <Image
+                                        Grid.Row="0"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,0,0,15"
+                                        HeightRequest="25"
+                                        HorizontalOptions="End"
+                                        Source="closeicon.svg"
+                                        VerticalOptions="Center" />
+
+
+
+                                    <Label
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="14"
+                                        HorizontalOptions="Start"
+                                        Text="Invoice Date"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+                                    <Border
+                                        Grid.Row="2"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,0,0,15"
+                                        Padding="15,5"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <Grid>
+                                            <DatePicker
+                                                FontAttributes="Bold"
+                                                FontSize="17"
+                                                Format="dd MMM yyyy"
+                                                HorizontalOptions="Start" />
+                                            <Image
+                                                HeightRequest="26"
+                                                HorizontalOptions="End"
+                                                Source="calendaricon.svg"
+                                                VerticalOptions="Center" />
+
+                                        </Grid>
+                                    </Border>
+
+                                    <Label
+                                        Grid.Row="3"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="14"
+                                        HorizontalOptions="Start"
+                                        Text="Due Date"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+                                    <Border
+                                        Grid.Row="4"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,0,0,10"
+                                        Padding="15,5"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <Grid>
+                                            <DatePicker
+                                                FontAttributes="Bold"
+                                                FontSize="17"
+                                                Format="dd MMM yyyy"
+                                                HorizontalOptions="Start" />
+                                            <Image
+                                                HeightRequest="26"
+                                                HorizontalOptions="End"
+                                                Source="calendaricon.svg"
+                                                VerticalOptions="Center" />
+
+                                        </Grid>
+                                    </Border>
+
+
+                                    <HorizontalStackLayout Grid.Row="5" Margin="0,0,0,16">
+                                        <Image
+                                            HeightRequest="18"
+                                            Source="cancelicon.svg"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Margin="7,3,0,0"
+                                            FontAttributes="Bold"
+                                            FontFamily="PoppinsBold"
+                                            FontSize="14"
+                                            HorizontalOptions="Start"
+                                            Text="Remove Due Date"
+                                            TextColor="{DynamicResource Primary}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+
+                                    <!--  || Invoice Number ||  -->
+                                    <Label
+                                        Grid.Row="6"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="14"
+                                        HorizontalOptions="Start"
+                                        IsVisible="False"
+                                        Text="Invoice Number"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.ColumnSpan="2"
+                                        Padding="8,5"
+                                        IsVisible="False"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <Entry
+                                            FontAttributes="Bold"
+                                            FontFamily="PoppinsRegular"
+                                            FontSize="14"
+                                            Placeholder="Invoice Number"
+                                            Text="16" />
+                                    </Border>
+
+                                    <!--  || Prefix ||  -->
+                                    <Label
+                                        Grid.Row="6"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="14"
+                                        HorizontalOptions="Start"
+                                        Text="Prefix"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        Margin="0,0,4,0"
+                                        Padding="8,5"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <Entry
+                                            FontAttributes="Bold"
+                                            FontFamily="PoppinsRegular"
+                                            FontSize="14"
+                                            Placeholder="BN/SL/" />
+                                    </Border>
+
+                                    <Label
+                                        Grid.Row="6"
+                                        Grid.Column="1"
+                                        Margin="4,0,0,0"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="14"
+                                        HorizontalOptions="Start"
+                                        Text="Starting Serial Number"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.Column="1"
+                                        Margin="4,0,0,0"
+                                        Padding="8,5"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2">
+                                        <Entry
+                                            FontAttributes="Bold"
+                                            FontFamily="PoppinsRegular"
+                                            FontSize="14"
+                                            Text="20" />
+                                    </Border>
+
+
+
+
+
+                                    <HorizontalStackLayout
+                                        Grid.Row="8"
+                                        Margin="0,15,0,18"
+                                        HorizontalOptions="Start">
+                                        <Image
+                                            HeightRequest="20"
+                                            Source="addicon.svg"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Margin="7,3,0,0"
+                                            FontAttributes="Bold"
+                                            FontFamily="PoppinsBold"
+                                            FontSize="14"
+                                            HorizontalOptions="Start"
+                                            Text="Add Prefix"
+                                            TextColor="{DynamicResource Primary}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Row="8"
+                                        FontFamily="PoppinsMedium"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="(Ex: BN/SL/20, BN/SL/21..)"
+                                        TextColor="Gray"
+                                        VerticalOptions="Center" />
+
+
+
+                                    <Button
+                                        Grid.Row="9"
+                                        CornerRadius="5"
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        Text="SAVE" />
+                                </Grid>
+
+                            </DataTemplate>
+                        </bottomsheet:BottomSheetContent.ContentTemplate>
+                    </bottomsheet:BottomSheetContent>
+                </bottomsheet:BottomSheet.Content>
+            </bottomsheet:BottomSheet>
+
+            <!--#endregion-->
+
+            <Grid
+                Grid.Row="2"
+                Padding="10"
+                BackgroundColor="{StaticResource PageBackground}"
+                RowDefinitions="auto,auto,auto,auto,auto">
+
+
+                <!--#region Parties-->
+                <Label Grid.Row="0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span
+                                FontAttributes="Bold"
+                                Text="PARTY NAME "
+                                TextColor="Black" />
+                            <Span Text="*" TextColor="Red" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Border
+                    Grid.Row="1"
+                    Margin="0,8,0,0"
+                    Padding="10"
+                    BackgroundColor="Transparent"
+                    Stroke="LightGray"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleBottomSheetCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout>
+                        <Image
+                            HeightRequest="20"
+                            Source="usericon.png"
+                            WidthRequest="20" />
+                        <Label
+                            Margin="10,0,0,0"
+                            Text="INDEXIAL TECHNOLOGIES"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <bottomsheet:BottomSheet
+                    Grid.RowSpan="10"
+                    CurrentState="Medium"
+                    HeightRequest="100"
+                    IsCancelable="True"
+                    IsDraggable="True"
+                    IsOpen="False"
+                    States="Medium">
+
+
+                    <bottomsheet:BottomSheet.Content>
+                        <bottomsheet:BottomSheetContent>
+                            <bottomsheet:BottomSheetContent.ContentTemplate>
+                                <DataTemplate x:DataType="viewmodels:BaseViewModel">
+
+                                    <Grid
+                                        Grid.Row="10"
+                                        Margin="0,30,0,0"
+                                        Padding="12"
+                                        BackgroundColor="White"
+                                        RowDefinitions="auto,*,auto">
+                                        <Entry Grid.Row="0" Placeholder="Search Party" />
+                                        <Grid
+                                            Grid.Row="1"
+                                            Padding="10"
+                                            ColumnDefinitions="auto,*,auto,auto"
+                                            RowDefinitions="*,*">
+                                            <Image
+                                                Grid.RowSpan="2"
+                                                Grid.Column="0"
+                                                Source="partyicon.png"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Margin="10,0"
+                                                FontAttributes="Bold"
+                                                FontSize="18"
+                                                Text="Cash Sale" />
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Margin="10,0"
+                                                Text="954329843"
+                                                TextColor="Gray" />
+                                            <Label
+                                                Grid.RowSpan="2"
+                                                Grid.Column="2"
+                                                FontSize="18"
+                                                Text="₹500"
+                                                TextColor="Gray"
+                                                VerticalOptions="Center" />
+                                            <Image
+                                                Grid.RowSpan="2"
+                                                Grid.Column="3"
+                                                Margin="10,0,0,0"
+                                                HeightRequest="20"
+                                                Source="downarrowicon.svg"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                        <HorizontalStackLayout Grid.Row="2" Margin="0,10,0,0">
+                                            <Image Source="contactsettingicon.png" VerticalOptions="Center" />
+                                            <Label
+                                                Margin="15,0,0,0"
+                                                Text="Contact Permissions not granted"
+                                                TextColor="Gray"
+                                                VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </bottomsheet:BottomSheetContent.ContentTemplate>
+                        </bottomsheet:BottomSheetContent>
+                    </bottomsheet:BottomSheet.Content>
+                </bottomsheet:BottomSheet>
+
+                <!--#endregion-->
+
+                <!--#region Items-->
+                <Grid
+                    Grid.Row="2"
+                    Margin="0,15,0,10"
+                    ColumnDefinitions="auto,auto,*,auto">
+                    <Image
+                        Margin="0,0,5,0"
+                        HeightRequest="20"
+                        Source="uparrowicon.svg"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        Text="ITEMS"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Column="2"
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        HorizontalOptions="Start"
+                        Text=" (2)"
+                        VerticalOptions="Center" />
+                    <Button
+                        Grid.Column="3"
+                        BackgroundColor="White"
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        Text="+ Item"
+                        TextColor="{DynamicResource Primary}"
+                        VerticalOptions="Center" />
+                </Grid>
+
+                <CollectionView x:Name="collection" Grid.Row="3">
+                    <CollectionView.EmptyView>
+                        <Button
+                            BackgroundColor="#E6E1F4"
+                            CornerRadius="0"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HeightRequest="100"
+                            Text="Add Items"
+                            TextColor="{DynamicResource Primary}"
+                            VerticalOptions="Center" />
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Grid.Row="4"
+                                Margin="0,10"
+                                BackgroundColor="White"
+                                ColumnDefinitions="100,*,auto"
+                                RowDefinitions="auto,auto,auto,auto">
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,0,0,2"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsMedium"
+                                    Text="Sample Item" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="0,0,0,2"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsMedium"
+                                    Text="₹ 990" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="Batch No."
+                                    TextColor="{DynamicResource Primary}" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="Batch #1"
+                                    TextColor="{DynamicResource Primary}" />
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    HeightRequest="35"
+                                    StrokeShape="RoundRectangle 20">
+                                    <Button
+                                        Margin="0"
+                                        BackgroundColor="Transparent"
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="12"
+                                        HorizontalOptions="Center"
+                                        Text="EDIT"
+                                        TextColor="{DynamicResource Primary}"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="Qty x Rate" />
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="2.0 PCS X 107.14" />
+
+                                <Label
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="Tax" />
+                                <Label
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="12.0%= 25.71" />
+                                <bottomsheet:BottomSheet
+                                    Grid.RowSpan="10"
+                                    CurrentState="Large"
+                                    HeightRequest="100"
+                                    IsCancelable="True"
+                                    IsDraggable="True"
+                                    IsOpen="False"
+                                    States="Large">
+                                    <bottomsheet:BottomSheet.Content>
+                                        <bottomsheet:BottomSheetContent>
+                                            <bottomsheet:BottomSheetContent.ContentTemplate>
+                                                <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                                                    <Grid
+                                                        BackgroundColor="White"
+                                                        ColumnDefinitions="*,*"
+                                                        RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto">
+                                                        <Grid
+                                                            Grid.Row="0"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="0,0,0,0"
+                                                            Padding="0"
+                                                            BackgroundColor="{DynamicResource PageBackground}"
+                                                            ColumnDefinitions="auto,*,auto"
+                                                            HorizontalOptions="FillAndExpand"
+                                                            VerticalOptions="Center">
+                                                            <Border
+                                                                BackgroundColor="White"
+                                                                HeightRequest="40"
+                                                                StrokeShape="RoundRectangle 20"
+                                                                StrokeThickness="0"
+                                                                WidthRequest="40">
+                                                                <Image
+                                                                    HeightRequest="20"
+                                                                    Source="back.png"
+                                                                    WidthRequest="20" />
+                                                            </Border>
+                                                            <Label
+                                                                Margin="23,10,10,10"
+                                                                FontAttributes="Bold"
+                                                                FontSize="20"
+                                                                HorizontalOptions="Start"
+                                                                Text="Sample Items"
+                                                                VerticalOptions="Center" />
+                                                            <Border
+                                                                Grid.Column="2"
+                                                                HeightRequest="35"
+                                                                StrokeShape="RoundRectangle 20">
+                                                                <Button
+                                                                    Margin="0"
+                                                                    BackgroundColor="Transparent"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsRegular"
+                                                                    FontSize="12"
+                                                                    HorizontalOptions="Center"
+                                                                    Text="DEL"
+                                                                    TextColor="DarkRed"
+                                                                    VerticalOptions="Center" />
+                                                            </Border>
+                                                        </Grid>
+
+                                                        <Label
+                                                            Grid.Row="1"
+                                                            Margin="0,20,0,0"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsBold"
+                                                            FontSize="14"
+                                                            Text="Purchase Price"
+                                                            TextColor="Gray" />
+                                                        <Border
+                                                            Grid.Row="2"
+                                                            Grid.ColumnSpan="2"
+                                                            Padding="10,0,5,0"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            StrokeThickness="2">
+                                                            <Grid ColumnDefinitions="auto,*,auto">
+                                                                <Label
+                                                                    Margin="0,0,8,0"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsBold"
+                                                                    FontSize="20"
+                                                                    Text="₹"
+                                                                    VerticalOptions="Center" />
+                                                                <Entry
+                                                                    Grid.Column="1"
+                                                                    FontFamily="PoppinsBold"
+                                                                    FontSize="16"
+                                                                    Text="220.0"
+                                                                    VerticalOptions="Center" />
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <Label
+                                                            Grid.Row="3"
+                                                            Margin="0,20,0,0"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsBold"
+                                                            FontSize="14"
+                                                            Text="Quantity"
+                                                            TextColor="Gray" />
+                                                        <Border
+                                                            Grid.Row="4"
+                                                            Margin="0,0,3,0"
+                                                            Padding="10,0,5,0"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            StrokeThickness="2">
+                                                            <Entry
+                                                                Grid.Column="1"
+                                                                FontFamily="PoppinsBold"
+                                                                FontSize="16"
+                                                                Text="4.5"
+                                                                VerticalOptions="Center" />
+                                                        </Border>
+                                                        <Label
+                                                            Grid.Row="3"
+                                                            Grid.Column="1"
+                                                            Margin="3,20,0,0"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsBold"
+                                                            FontSize="14"
+                                                            Text="Unit"
+                                                            TextColor="Gray" />
+                                                        <Border
+                                                            Grid.Row="4"
+                                                            Grid.Column="1"
+                                                            Margin="3,0,0,0"
+                                                            Padding="10,0,5,0"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            StrokeThickness="2">
+                                                            <Grid>
+                                                                <Label
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="16"
+                                                                    HorizontalOptions="Start"
+                                                                    Text="BOX"
+                                                                    TextColor="Gray"
+                                                                    VerticalOptions="Center" />
+                                                                <Picker Opacity="0" WidthRequest="300" />
+                                                                <Image
+                                                                    Margin="0,0,3,0"
+                                                                    HeightRequest="20"
+                                                                    HorizontalOptions="End"
+                                                                    Source="uparrowicon.svg" />
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <Label
+                                                            Grid.Row="5"
+                                                            Grid.Column="0"
+                                                            Margin="3,20,0,0"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsBold"
+                                                            FontSize="14"
+                                                            Text="Discount"
+                                                            TextColor="Gray" />
+                                                        <Border
+                                                            Grid.Row="6"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="3,0,0,0"
+                                                            Padding="10,0,5,0"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            StrokeThickness="2">
+                                                            <Grid ColumnDefinitions="*,auto,auto">
+                                                                <Entry
+                                                                    Grid.Column="0"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="16"
+                                                                    Text="0.0" />
+                                                                <Label
+                                                                    Grid.Column="1"
+                                                                    Margin="0,0,8,0"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="16"
+                                                                    HorizontalOptions="Start"
+                                                                    Text="%"
+                                                                    TextColor="Gray"
+                                                                    VerticalOptions="Center" />
+                                                                <Border
+                                                                    Grid.Column="2"
+                                                                    Margin="0,0,10,0"
+                                                                    Padding="10,0,5,0"
+                                                                    HeightRequest="35"
+                                                                    StrokeShape="RoundRectangle 8"
+                                                                    StrokeThickness="2">
+                                                                    <HorizontalStackLayout>
+                                                                        <Label
+                                                                            Grid.Column="2"
+                                                                            FontAttributes="Bold"
+                                                                            FontFamily="PoppinsMedium"
+                                                                            FontSize="12"
+                                                                            InputTransparent="True"
+                                                                            Text="Percentange"
+                                                                            TextColor="Gray"
+                                                                            VerticalOptions="Center" />
+                                                                        <Picker Opacity="0" />
+                                                                        <Image
+                                                                            Margin="-38,0,3,0"
+                                                                            HeightRequest="15"
+                                                                            InputTransparent="True"
+                                                                            Source="uparrowicon.svg" />
+                                                                    </HorizontalStackLayout>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <Label
+                                                            Grid.Row="7"
+                                                            Margin="3,20,0,0"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsBold"
+                                                            FontSize="14"
+                                                            Text="Tax Rate"
+                                                            TextColor="Gray" />
+                                                        <Border
+                                                            Grid.Row="8"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="3,0,0,0"
+                                                            Padding="10,0,5,0"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            StrokeThickness="2">
+                                                            <Grid>
+                                                                <Label
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="16"
+                                                                    HorizontalOptions="Start"
+                                                                    InputTransparent="True"
+                                                                    Text="GST @ 12%"
+                                                                    TextColor="Gray"
+                                                                    VerticalOptions="Center" />
+                                                                <Picker Opacity="0" WidthRequest="400" />
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <Border
+                                                            Grid.Row="9"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="0,15"
+                                                            BackgroundColor="Gainsboro"
+                                                            StrokeShape="RoundRectangle 8">
+                                                            <Grid
+                                                                Padding="10"
+                                                                ColumnDefinitions="*,*"
+                                                                RowDefinitions="auto,auto,auto,auto">
+                                                                <Label
+                                                                    Grid.Row="0"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    Text="Tax Exclusive Pirce * Qty"
+                                                                    TextColor="DimGray" />
+                                                                <Label
+                                                                    Grid.Row="0"
+                                                                    Grid.Column="1"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    HorizontalOptions="End"
+                                                                    Text="₹ 883.93"
+                                                                    TextColor="DimGray" />
+
+                                                                <Label
+                                                                    Grid.Row="1"
+                                                                    Margin="0,2"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    Text="Discount"
+                                                                    TextColor="DimGray" />
+                                                                <Label
+                                                                    Grid.Row="1"
+                                                                    Grid.Column="1"
+                                                                    Margin="0,2"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    HorizontalOptions="End"
+                                                                    Text="(0.0%) ₹ 0.0"
+                                                                    TextColor="DimGray" />
+
+                                                                <Label
+                                                                    Grid.Row="2"
+                                                                    Margin="0,2"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    Text="Tax Rate (%)"
+                                                                    TextColor="DimGray" />
+                                                                <Label
+                                                                    Grid.Row="2"
+                                                                    Grid.Column="1"
+                                                                    Margin="0,2"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    HorizontalOptions="End"
+                                                                    Text="(12.0%) ₹ 106.07"
+                                                                    TextColor="DimGray" />
+
+                                                                <Label
+                                                                    Grid.Row="3"
+                                                                    Margin="0,2"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    Text="Total Amount" />
+                                                                <Label
+                                                                    Grid.Row="3"
+                                                                    Grid.Column="1"
+                                                                    Margin="0,2"
+                                                                    FontAttributes="Bold"
+                                                                    FontFamily="PoppinsMedium"
+                                                                    FontSize="11"
+                                                                    HorizontalOptions="End"
+                                                                    Text="₹ 990" />
+
+
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <Button
+                                                            Grid.Row="12"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="0,10"
+                                                            FontAttributes="Bold"
+                                                            Text="Done" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </bottomsheet:BottomSheetContent.ContentTemplate>
+                                        </bottomsheet:BottomSheetContent>
+                                    </bottomsheet:BottomSheet.Content>
+                                </bottomsheet:BottomSheet>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label
+                    Grid.Row="4"
+                    Margin="0,10,0,0"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="Start"
+                    Text="Item Subtotal" />
+
+                <Label
+                    Grid.Row="4"
+                    Margin="0,10,0,0"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="End"
+                    Text="1230.00" />
+            </Grid>
+            <!--#endregion-->
+
+            <VerticalStackLayout Grid.Row="4">
+
+                <!--#region Additional Charges-->
+                <Button
+                    Grid.Row="0"
+                    Margin="0,10,10,0"
+                    BackgroundColor="Transparent"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="End"
+                    IsVisible="True"
+                    Text="+ Additional Charges"
+                    TextColor="{DynamicResource Primary}" />
+                <Grid
+                    Grid.Row="0"
+                    Margin="0,15,0,0"
+                    Padding="5,0"
+                    BackgroundColor="White"
+                    ColumnDefinitions="auto,*,auto"
+                    IsVisible="False">
+                    <Image
+                        Margin="0,0,5,0"
+                        HeightRequest="20"
+                        Source="uparrowicon.svg"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        Text="ADD ADDITIONAL CHARGES"
+                        VerticalOptions="Center" />
+                    <Button
+                        Grid.Column="3"
+                        BackgroundColor="White"
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        Text="+"
+                        TextColor="{DynamicResource Primary}"
+                        VerticalOptions="Center" />
+                </Grid>
+                <Grid
+                    Grid.Row="1"
+                    Margin="0,0,0,10"
+                    Padding="5,0"
+                    BackgroundColor="White"
+                    ColumnDefinitions="auto,*,auto,auto"
+                    IsVisible="False"
+                    RowDefinitions="auto,auto">
+                    <Image HeightRequest="18" Source="cancelicon.svg" />
+                    <HorizontalStackLayout Grid.Column="1">
+                        <Entry
+                            Margin="10,0"
+                            HorizontalOptions="Start"
+                            Text="Loading"
+                            WidthRequest="80" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Column="2">
+                        <Label
+                            Margin="10,0"
+                            Text="₹"
+                            VerticalOptions="Center" />
+                        <Entry Text="50" WidthRequest="80" />
+                    </HorizontalStackLayout>
+
+                    <Border
+                        Grid.Column="3"
+                        Margin="3,0,0,0"
+                        Padding="10,0,5,0"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 8"
+                        WidthRequest="100">
+                        <Grid Margin="0,-30">
+                            <Label
+                                Margin="0"
+                                Padding="0"
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsMedium"
+                                FontSize="12"
+                                HorizontalOptions="Start"
+                                Text="GST 290%"
+                                TextColor="Gray"
+                                VerticalOptions="Center" />
+                            <Picker Opacity="0" WidthRequest="300" />
+                            <Image
+                                Margin="0,0,3,0"
+                                HeightRequest="20"
+                                HorizontalOptions="End"
+                                Rotation="180"
+                                Source="uparrowicon.svg" />
+                        </Grid>
+                    </Border>
+                    <Border
+                        Grid.Row="1"
+                        Grid.ColumnSpan="4"
+                        Padding="4,4"
+                        BackgroundColor="White"
+                        Stroke="Transparent">
+                        <Label HorizontalOptions="End" Text="Amount incl of tax - ₹ 188.0" />
+                    </Border>
+                </Grid>
+                <!--#endregion-->
+
+
+                <!--#region Discount-->
+                <Button
+                    Grid.Row="1"
+                    Margin="0,0,10,0"
+                    BackgroundColor="Transparent"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="End"
+                    IsVisible="True"
+                    Text="+ Discount"
+                    TextColor="{DynamicResource Primary}" />
+                <Grid
+                    Grid.Row="1"
+                    Margin="0,0,0,10"
+                    Padding="5,0"
+                    BackgroundColor="White"
+                    ColumnDefinitions="auto,*,auto,auto"
+                    IsVisible="False">
+                    <Image HeightRequest="18" Source="cancelicon.svg" />
+                    <HorizontalStackLayout Grid.Column="1">
+                        <Label
+                            Margin="10,0"
+                            Text="Discount After Tax"
+                            VerticalOptions="Center"
+                            WidthRequest="120" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Column="2">
+                        <Entry Text="8" WidthRequest="80" />
+                        <Label
+                            Margin="10,0"
+                            Text="%"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Column="3">
+                        <Label
+                            Margin="10,0"
+                            Text="₹"
+                            VerticalOptions="Center" />
+                        <Entry Text="50" WidthRequest="80" />
+                    </HorizontalStackLayout>
+                </Grid>
+                <!--#endregion-->
+
+                <!--#region Round Off-->
+                <Button
+                    Grid.Row="2"
+                    Margin="0,-0,10,0"
+                    BackgroundColor="Transparent"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="End"
+                    IsVisible="True"
+                    Text="+ Round Off"
+                    TextColor="{DynamicResource Primary}" />
+                <Grid
+                    Grid.Row="2"
+                    Margin="0,0,0,10"
+                    Padding="5,0"
+                    BackgroundColor="White"
+                    ColumnDefinitions="auto,auto,auto,*,auto"
+                    IsVisible="False">
+                    <Image HeightRequest="18" Source="cancelicon.svg" />
+                    <HorizontalStackLayout Grid.Column="1" Margin="10,0,0,0">
+                        <Label
+                            HorizontalOptions="Start"
+                            Text="Round Off"
+                            VerticalOptions="Center"
+                            WidthRequest="120" />
+                    </HorizontalStackLayout>
+                    <Border
+                        Grid.Column="2"
+                        Background="Gainsboro"
+                        HeightRequest="35"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 20">
+                        <Button
+                            Margin="0"
+                            BackgroundColor="Transparent"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="-"
+                            TextColor="Black"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Border
+                        Grid.Column="2"
+                        Background="Gainsboro"
+                        HeightRequest="35"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 20">
+                        <Button
+                            Margin="0"
+                            BackgroundColor="Transparent"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="-"
+                            TextColor="Black"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Border
+                        Grid.Column="3"
+                        Margin="4,0"
+                        Background="{DynamicResource Primary}"
+                        HeightRequest="35"
+                        HorizontalOptions="Start"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 20">
+                        <Button
+                            Margin="0"
+                            BackgroundColor="Transparent"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="+"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <HorizontalStackLayout Grid.Column="4">
+                        <Label
+                            Margin="10,0"
+                            Text="₹"
+                            VerticalOptions="Center" />
+                        <Entry Text="50" WidthRequest="80" />
+                    </HorizontalStackLayout>
+                </Grid>
+                <!--#endregion-->
+
+            </VerticalStackLayout>
+
+
+            <!--#region Total Amount-->
+            <Grid
+                Grid.Row="5"
+                Margin="0,10,0,5"
+                Padding="8,10"
+                BackgroundColor="White"
+                ColumnDefinitions="*,80"
+                HeightRequest="50">
+                <Label
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    FontSize="16"
+                    HorizontalOptions="Start"
+                    Text="Total Amount"
+                    VerticalOptions="Center" />
+                <Border Grid.Column="1" Stroke="Transparent">
+                    <HorizontalStackLayout>
+                        <Label
+                            Margin="0,0,6,0"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsMedium"
+                            FontSize="16"
+                            HorizontalOptions="Start"
+                            Text="₹"
+                            VerticalOptions="Center" />
+                        <Entry
+                            Margin="4,0"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsMedium"
+                            HorizontalOptions="End"
+                            Text="1230.00"
+                            VerticalOptions="Center" />
+                        <BoxView
+                            BackgroundColor="Black"
+                            HeightRequest="1"
+                            HorizontalOptions="Fill" />
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+            <!--#endregion-->
+
+            <VerticalStackLayout Grid.Row="6">
+
+                <!--#region Received Amount-->
+                <Button
+                    BackgroundColor="Transparent"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="End"
+                    IsVisible="False"
+                    Text="+ Amount Received"
+                    TextColor="{DynamicResource Primary}" />
+                <Grid
+                    Margin="0,5,0,5"
+                    Padding="10,10"
+                    BackgroundColor="White"
+                    ColumnDefinitions="*,80"
+                    HeightRequest="50">
+                    <Label
+                        FontFamily="PoppinsMedium"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="Received Amount"
+                        VerticalOptions="Center" />
+                    <Border Grid.Column="1" Stroke="Transparent">
+                        <HorizontalStackLayout>
+                            <Label
+                                Margin="0,0,6,0"
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsMedium"
+                                FontSize="16"
+                                HorizontalOptions="Start"
+                                Text="₹"
+                                VerticalOptions="Center" />
+                            <Entry
+                                Margin="4,0"
+                                HorizontalOptions="End"
+                                Text="130.00"
+                                VerticalOptions="Center" />
+                            <BoxView
+                                BackgroundColor="Black"
+                                HeightRequest="1"
+                                HorizontalOptions="Fill" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+                <Grid
+                    Margin="0,5,0,5"
+                    Padding="10,10"
+                    BackgroundColor="White"
+                    ColumnDefinitions="*,80"
+                    HeightRequest="50">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="Balance"
+                        TextColor="Green"
+                        VerticalOptions="Center" />
+                    <Border Grid.Column="1" Stroke="Transparent">
+                        <HorizontalStackLayout>
+                            <Label
+                                Margin="0,0,6,0"
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsMedium"
+                                FontSize="16"
+                                HorizontalOptions="Start"
+                                Text="₹"
+                                VerticalOptions="Center" />
+                            <Label
+                                Margin="4,0"
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsMedium"
+                                HorizontalOptions="End"
+                                Text="1500.00"
+                                TextColor="Green"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Grid
+                    Margin="0,5,0,5"
+                    Padding="8,10"
+                    BackgroundColor="White"
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="auto,auto">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsMedium"
+                        FontSize="16"
+                        HorizontalOptions="Start"
+                        Text="PAYMENT MODE"
+                        VerticalOptions="Center" />
+                    <Border
+                        Grid.Column="1"
+                        Margin="0,0,8,0"
+                        Stroke="Gainsboro"
+                        StrokeShape="RoundRectangle 6"
+                        StrokeThickness="2">
+                        <Grid>
+                            <Label
+                                Margin="6,0,0,0"
+                                FontFamily="PoppinsMedium"
+                                FontSize="16"
+                                HorizontalOptions="Start"
+                                Text="Cheque"
+                                TextColor="Gray"
+                                VerticalOptions="Center" />
+                            <Picker Opacity="0" />
+                            <Image
+                                Margin="0,0,8,0"
+                                HeightRequest="20"
+                                HorizontalOptions="End"
+                                Rotation="180"
+                                Source="uparrowicon.svg" />
+                        </Grid>
+                    </Border>
+
+                    <Label
+                        Grid.Row="1"
+                        Margin="0,8,0,0"
+                        FontFamily="PoppinsMedium"
+                        FontSize="14"
+                        HorizontalOptions="Start"
+                        Text="Select Bank Account"
+                        VerticalOptions="Center" />
+
+                    <HorizontalStackLayout
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        MaximumWidthRequest="200">
+                        <Label
+                            FontFamily="PoppinsMedium"
+                            FontSize="14"
+                            HorizontalOptions="Start"
+                            Text="AU FINANCE BANK"
+                            TextColor="Gray"
+                            VerticalOptions="Center" />
+                        <Picker Opacity="0" />
+                        <Image
+                            HeightRequest="20"
+                            HorizontalOptions="End"
+                            Rotation="90"
+                            Source="uparrowicon.svg" />
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <bottomsheet:BottomSheet
+                    Grid.RowSpan="10"
+                    CurrentState="Medium"
+                    IsCancelable="True"
+                    IsDraggable="True"
+                    IsOpen="False"
+                    States="Medium">
+
+
+                    <bottomsheet:BottomSheet.Content>
+                        <bottomsheet:BottomSheetContent>
+                            <bottomsheet:BottomSheetContent.ContentTemplate>
+                                <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                                    <Grid RowDefinitions="auto,*,auto">
+
+                                        <Grid
+                                            Grid.Row="0"
+                                            Margin="0,0,0,0"
+                                            Padding="4"
+                                            BackgroundColor="{StaticResource PageBackground}"
+                                            ColumnDefinitions="*,auto"
+                                            HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="Center">
+                                            <Border
+                                                BackgroundColor="White"
+                                                HeightRequest="40"
+                                                StrokeShape="RoundRectangle 20"
+                                                StrokeThickness="0"
+                                                WidthRequest="40" />
+                                            <Label
+                                                Grid.Column="0"
+                                                Margin="23,10,10,10"
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                HorizontalOptions="Start"
+                                                Text="Select Bank Account"
+                                                VerticalOptions="Center" />
+
+                                            <Image
+                                                Grid.Column="1"
+                                                Margin="0,0,10,0"
+                                                HeightRequest="20"
+                                                Source="close.png"
+                                                WidthRequest="20" />
+
+
+                                        </Grid>
+
+
+
+                                        <VerticalStackLayout Grid.Row="1">
+                                            <Grid ColumnDefinitions="auto,*,auto" RowDefinitions="auto,auto">
+                                                <Image
+                                                    Grid.RowSpan="2"
+                                                    Margin="9,0"
+                                                    HeightRequest="35"
+                                                    Source="bankicon.svg"
+                                                    VerticalOptions="Center" />
+
+                                                <Label
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    FontFamily="PoppinsMedium"
+                                                    FontSize="16"
+                                                    HorizontalOptions="Start"
+                                                    Text="AU FINANCE BANK"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    FontFamily="PoppinsMedium"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Start"
+                                                    Text="12345679 ·  ICICI Bank"
+                                                    TextColor="Gray"
+                                                    VerticalOptions="Center" />
+
+                                                <RadioButton
+                                                    Grid.RowSpan="2"
+                                                    Grid.Column="2"
+                                                    IsChecked="True" />
+                                            </Grid>
+                                        </VerticalStackLayout>
+
+
+                                        <Border
+                                            Grid.Row="2"
+                                            Margin="8,0"
+                                            Stroke="Gainsboro"
+                                            StrokeShape="RoundRectangle 8"
+                                            StrokeThickness="2">
+                                            <Button
+                                                Background="White"
+                                                FontAttributes="Bold"
+                                                FontFamily="PoppinsBold"
+                                                HorizontalOptions="Center"
+                                                Text="+ Add new Bank"
+                                                TextColor="{DynamicResource Primary}" />
+                                        </Border>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </bottomsheet:BottomSheetContent.ContentTemplate>
+                        </bottomsheet:BottomSheetContent>
+                    </bottomsheet:BottomSheet.Content>
+                </bottomsheet:BottomSheet>
+
+
+
+                <!--#endregion-->
+
+
+                <!--#region Notes-->
+                <Grid
+                    Grid.Row="2"
+                    Margin="0,0,0,10"
+                    Padding="5,0"
+                    BackgroundColor="White"
+                    ColumnDefinitions="auto,*"
+                    IsVisible="False">
+                    <Image
+                        Margin="6,0,10,0"
+                        HeightRequest="18"
+                        Source="cancelicon.svg" />
+                    <Border
+                        Grid.Column="1"
+                        Padding="8,0"
+                        Stroke="Gainsboro"
+                        StrokeShape="RoundRectangle 6"
+                        StrokeThickness="2">
+                        <Entry Placeholder="Add your notes here" />
+                    </Border>
+                </Grid>
+
+                <Button
+                    Margin="0,5"
+                    BackgroundColor="Transparent"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsMedium"
+                    HorizontalOptions="End"
+                    IsVisible="True"
+                    Text="+ Notes"
+                    TextColor="{DynamicResource Primary}" />
+                <!--#endregion-->
+
+
+
+            </VerticalStackLayout>
+
+
+            <!--#region Buttons-->
+            <Grid
+                Grid.Row="7"
+                ColumnDefinitions="*,*"
+                HeightRequest="60"
+                VerticalOptions="End">
+                <Button
+                    Background="#E6E0FA"
+                    CornerRadius="0"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsRegular"
+                    FontSize="16"
+                    Text=" save &amp; new"
+                    TextColor="{DynamicResource Primary}" />
+                <Button
+                    Grid.Column="1"
+                    CornerRadius="0"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsRegular"
+                    FontSize="16"
+                    Text="Generate Bill" />
+            </Grid>
+            <!--#endregion-->
+
+
+
+        </Grid>
+    </ScrollView>
+
+
+</ContentPage>

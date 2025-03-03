@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="OptMobile.Retailer.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:OptMobile.Retailer"
+    xmlns:views="clr-namespace:OptMobile.Retailer.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="ShellContent">
+                <Setter Property="Shell.NavBarIsVisible" Value="True" />
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Purple}" />
+                <!--<Setter Property="Shell.TabBarIsVisible" Value="False" />-->
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" Route="LoginPage" />
+    <ShellContent ContentTemplate="{DataTemplate local:OtpPage}" Route="OtpPage" />
+
+    <TabBar x:Name="tabBarMain">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate views:HomePage}"
+            Icon="home.png"
+            Route="HomePage" />
+
+        <ShellContent
+            Title="Parties"
+            ContentTemplate="{DataTemplate views:CustomersPage}"
+            Icon="people.png"
+            Route="CustomersPage" />
+
+        <!--<ShellContent
+            Title="Menu"
+            ContentTemplate="{DataTemplate views:MenuPage}"
+            Route="MenuPage"
+            Icon="plus_filled.png" />-->
+
+        <ShellContent
+            Title="Offers"
+            ContentTemplate="{DataTemplate views:OffersPage}"
+            Icon="offer.png"
+            Route="OffersPage" />
+
+        <ShellContent
+            Title="Account"
+            ContentTemplate="{DataTemplate views:UserAccountPage}"
+            Icon="user.png"
+            Route="UserAccountPage" />
+    </TabBar>
+
+    <!--  Define non-tab page route  -->
+    <!--<ShellContent ContentTemplate="{DataTemplate views:CustomerInvoicePage}" Route="CustomerInvoicePage" />
+    <ShellContent ContentTemplate="{DataTemplate views:PaymentPage}" Route="PaymentPage" />
+    <ShellContent ContentTemplate="{DataTemplate views:InvoiceDetailsPage}" Route="InvoiceDetailsPage" />-->
+</Shell>

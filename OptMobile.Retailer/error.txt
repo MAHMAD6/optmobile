@@ -1,0 +1,15 @@
+﻿** System.ArgumentException: 'unable to figure out route for: NewCustomerPage (Parameter 'uri')'
+	1. In Shell => If page is not register as global routing it will throw exception
+	2. Without registering using => await Shell.Current.GoToAsync($"{nameof(NewCustomerPage)}"); here above error will be thrown
+
+** Dispatcher => LoginViewModel
+	1. 'Device.StartTimer(TimeSpan, Func<bool>)' is obselete: 'Use BindableObject.Dispatcher.StartTimer()'
+
+
+** Requirements
+	1. The page to shift upwards when the keyboard is shown (i.e., avoid the keyboard covering input fields)
+	2. cursor automatically moves to the next textbox after the user enters a value, and moves to the previous textbox when the user deletes the value in a textbox
+	3. Change logo : OptMed in Bubble Format, Circle Should Be Like Bubble => Nalin (Narendra Singh)
+	4. Navigation Bar Ingredient Color
+	5. How to access control property(TextBox => Focous, Color, BackgroundColor etc.) from ViewModel
+	5. How to configure 'network_security_config' in AndroidManifest.xml

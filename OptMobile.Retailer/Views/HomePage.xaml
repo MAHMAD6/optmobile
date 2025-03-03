@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ct="clr-namespace:OptMobile.Retailer.Control"
+    xmlns:helpers="clr-namespace:OptMobile.Retailer.Helpers"
+    xmlns:models="clr-namespace:OptMobile.Retailer.Models"
+    xmlns:viewmodels="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="viewmodels:HomeViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+            <ControlTemplate x:Key="RadioGroupTemplate">
+                <Border
+                    BackgroundColor="#F0F0F1"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    WidthRequest="120">
+                    <Label
+                        x:Name="label"
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        Text="{TemplateBinding Content}"
+                        VerticalOptions="Center" />
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CheckedStates">
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#008b8b" />
+                                        <Setter TargetName="label" Property="Label.Opacity" Value="1" />
+                                        <Setter TargetName="label" Property="Label.TextColor" Value="White" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#F0F0F1" />
+                                        <Setter TargetName="label" Property="Label.Opacity" Value="0.6" />
+                                        <Setter TargetName="label" Property="Label.TextColor" Value="Black" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Border>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid
+            Padding="15"
+            BackgroundColor="#F4F4F4"
+            HorizontalOptions="FillAndExpand"
+            RowDefinitions="Auto,Auto,*"
+            RowSpacing="20"
+            VerticalOptions="FillAndExpand">
+            <Grid
+                ColumnDefinitions="*,Auto"
+                HorizontalOptions="FillAndExpand"
+                RowDefinitions="Auto">
+                <VerticalStackLayout Spacing="5" VerticalOptions="Center">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="5">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Home"
+                            TextColor="Black" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="Icons"
+                            FontSize="20"
+                            HorizontalOptions="Start"
+                            HorizontalTextAlignment="Center"
+                            Text="&#xE80C;"
+                            TextColor="Black"
+                            VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LocationCommand}" NumberOfTapsRequired="1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Opacity="0.6"
+                        Text="B-56, Block B, Surya Vih..."
+                        TextColor="Black" />
+                </VerticalStackLayout>
+                <Border
+                    Grid.Column="1"
+                    HeightRequest="45"
+                    HorizontalOptions="End"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 24, 24, 24, 24"
+                    StrokeThickness="2"
+                    VerticalOptions="Center"
+                    WidthRequest="30">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CartPageNavigationCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                    <Image Source="cart.png" />
+                </Border>
+            </Grid>
+
+            <!--  Search Section  -->
+            <Border
+                Grid.Row="1"
+                Padding="10"
+                BackgroundColor="White"
+                HeightRequest="50"
+                StrokeShape="RoundRectangle 5"
+                VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SearchCommand}" NumberOfTapsRequired="1" />
+                </Border.GestureRecognizers>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Small"
+                    HeightRequest="20"
+                    HorizontalTextAlignment="Start"
+                    Text="Search..."
+                    TextColor="Gray" />
+            </Border>
+
+            <ActivityIndicator
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center" />
+
+            <Grid Grid.Row="2" HorizontalOptions="FillAndExpand">
+                <ScrollView Orientation="Vertical" VerticalScrollBarVisibility="Never">
+
+                    <VerticalStackLayout Padding="0" Spacing="15">
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <Border
+                                Padding="5"
+                                BackgroundColor="{StaticResource OptCardDark}"
+                                HorizontalOptions="FillAndExpand"
+                                StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsBold"
+                                    FontSize="11"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Order with Pharma Solution"
+                                    TextColor="White" />
+                            </Border>
+                        </Grid>
+
+                        <!--  Welcome offer section  -->
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto,Auto,Auto,Auto">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsBold"
+                                FontSize="Small"
+                                Text="Welcome offer" />
+                            <Image
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                Grid.Column="1"
+                                Source="welcome.png" />
+                            <Label
+                                Grid.Row="1"
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsBold"
+                                FontSize="Title"
+                                Text="5% extra off"
+                                TextColor="{StaticResource Purple}" />
+                            <HorizontalStackLayout Grid.Row="2">
+                                <Label Text="on first order | Use code" />
+                                <Border
+                                    Margin="5,-5,0,0"
+                                    Padding="5"
+                                    BackgroundColor="{StaticResource OptCardDark}"
+                                    HorizontalOptions="Center"
+                                    StrokeShape="RoundRectangle 10"
+                                    StrokeThickness="1"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="10"
+                                        Text="WELCOME5"
+                                        TextColor="White" />
+                                </Border>
+                            </HorizontalStackLayout>
+                            <Label
+                                Grid.Row="3"
+                                FontSize="Micro"
+                                Text="(Condition apply)*" />
+                        </Grid>
+
+                        <Grid HorizontalOptions="FillAndExpand" RowDefinitions="auto">
+                            <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                                <HorizontalStackLayout
+                                    x:Name="BrandList"
+                                    BindableLayout.ItemsSource="{Binding Brands}"
+                                    Spacing="10">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton Content="{Binding .}" ControlTemplate="{StaticResource RadioGroupTemplate}" />
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                            </ScrollView>
+                        </Grid>
+
+                        <!--  Start:: Popular Categories  -->
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsBold"
+                            FontSize="12"
+                            Text="Popular categories" />
+
+                        <CollectionView ItemsSource="{Binding DrugTypes}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout
+                                    HorizontalItemSpacing="10"
+                                    Orientation="Vertical"
+                                    Span="4"
+                                    VerticalItemSpacing="10" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:DrugTypeMaster">
+                                    <VerticalStackLayout>
+                                        <Border
+                                            BackgroundColor="#FAE9DF"
+                                            HeightRequest="90"
+                                            StrokeShape="RoundRectangle 5"
+                                            StrokeThickness="0">
+                                            <Image Aspect="AspectFill" Source="{Binding image_url}" />
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=CategoryWiseItemCommand}" CommandParameter="{Binding drug_type_id}" />
+                                            </Border.GestureRecognizers>
+                                        </Border>
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Text="{Binding drug_type}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <!--  End:: Popular Categories  -->
+
+                        <!--  Start:: Popular Items  -->
+                        <VerticalStackLayout Spacing="15">
+                            <Grid
+                                ColumnDefinitions="auto,*,auto"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="Center">
+                                <Grid Grid.Column="0">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="12"
+                                        Text="Popular" />
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="10"
+                                        Text="See All"
+                                        TextColor="{StaticResource OptCardDark}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SeeAllPopularCommand}" CommandParameter="{x:Static helpers:CuratedType.Popular}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+                            </Grid>
+                            <Grid HorizontalOptions="FillAndExpand" RowDefinitions="auto">
+                                <CollectionView ItemsSource="{Binding Populars}">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="{x:Type models:ItemMaster}">
+                                            <Border
+                                                Padding="10"
+                                                BackgroundColor="White"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                WidthRequest="250">
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=DetailPageNavCommand}" CommandParameter="{Binding .}" />
+                                                </Border.GestureRecognizers>
+                                                <VerticalStackLayout>
+                                                    <Grid HeightRequest="150" WidthRequest="230">
+                                                        <Border
+                                                            BackgroundColor="#e6e3e2"
+                                                            StrokeShape="RoundRectangle 2"
+                                                            StrokeThickness="0">
+                                                            <Image
+                                                                HeightRequest="150"
+                                                                Source="{Binding image_url}"
+                                                                WidthRequest="230" />
+                                                        </Border>
+                                                        <Border
+                                                            Margin="5"
+                                                            Padding="5"
+                                                            BackgroundColor="{StaticResource OptCardDark}"
+                                                            HorizontalOptions="End"
+                                                            StrokeShape="RoundRectangle 10"
+                                                            StrokeThickness="0"
+                                                            VerticalOptions="Start">
+                                                            <Label
+                                                                FontAttributes="Bold"
+                                                                FontSize="12"
+                                                                HorizontalOptions="Center"
+                                                                Text="{Binding mrp}"
+                                                                TextColor="White" />
+                                                        </Border>
+                                                    </Grid>
+
+                                                    <Grid
+                                                        ColumnDefinitions="Auto,*"
+                                                        RowDefinitions="Auto,Auto,Auto"
+                                                        RowSpacing="5">
+                                                        <Label
+                                                            Grid.ColumnSpan="2"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsRegular"
+                                                            FontSize="12"
+                                                            Text="{Binding item_name}" />
+                                                        <Label
+                                                            Grid.Row="1"
+                                                            FontSize="10"
+                                                            Text="{Binding packing}" />
+                                                        <Label
+                                                            Grid.Row="2"
+                                                            FontAttributes="Bold"
+                                                            FontSize="14"
+                                                            Text="{Binding Ptr}"
+                                                            TextColor="{StaticResource OptCardDark}"
+                                                            VerticalOptions="Center" />
+                                                        <HorizontalStackLayout
+                                                            Grid.Row="1"
+                                                            Grid.RowSpan="2"
+                                                            Grid.Column="1"
+                                                            HorizontalOptions="End">
+                                                            <ImageButton
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=DecrementPurchaseQuantityCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                HeightRequest="30"
+                                                                IsVisible="{Binding IsMinusButtonVisible}"
+                                                                Source="minuscart.png"
+                                                                WidthRequest="30" />
+                                                            <Label
+                                                                HorizontalOptions="CenterAndExpand"
+                                                                HorizontalTextAlignment="Center"
+                                                                IsVisible="{Binding IsMinusButtonVisible}"
+                                                                Text="{Binding Qty}"
+                                                                TextColor="Black"
+                                                                VerticalOptions="Center" />
+                                                            <ImageButton
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=IncrementPurchaseQuantityCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                HeightRequest="30"
+                                                                Source="pluscart.png"
+                                                                WidthRequest="30" />
+                                                        </HorizontalStackLayout>
+                                                    </Grid>
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Grid>
+                        </VerticalStackLayout>
+                        <!--  End:: Popular Brand  -->
+
+                        <!--  Start:: Recommended Items  -->
+                        <VerticalStackLayout Spacing="15">
+                            <Grid
+                                ColumnDefinitions="auto,*,auto"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="Center">
+                                <Grid Grid.Column="0">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="12"
+                                        Text="Recommended" />
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="10"
+                                        Text="See All"
+                                        TextColor="{StaticResource OptCardDark}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SeeAllPopularCommand}" CommandParameter="{x:Static helpers:CuratedType.Recommended}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+                            </Grid>
+                            <Grid HorizontalOptions="FillAndExpand" RowDefinitions="auto">
+                                <CollectionView ItemsSource="{Binding Recommended}">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="{x:Type models:ItemMaster}">
+                                            <Border
+                                                Padding="10"
+                                                BackgroundColor="White"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                WidthRequest="250">
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=DetailPageNavCommand}" CommandParameter="{Binding .}" />
+                                                </Border.GestureRecognizers>
+                                                <VerticalStackLayout>
+                                                    <Grid HeightRequest="150" WidthRequest="230">
+                                                        <Border
+                                                            BackgroundColor="#e6e3e2"
+                                                            StrokeShape="RoundRectangle 2"
+                                                            StrokeThickness="0">
+                                                            <Image
+                                                                HeightRequest="150"
+                                                                Source="{Binding image_url}"
+                                                                WidthRequest="230" />
+                                                        </Border>
+                                                        <Border
+                                                            Margin="5"
+                                                            Padding="5"
+                                                            BackgroundColor="{StaticResource OptCardDark}"
+                                                            HorizontalOptions="End"
+                                                            StrokeShape="RoundRectangle 10"
+                                                            StrokeThickness="0"
+                                                            VerticalOptions="Start">
+                                                            <Label
+                                                                FontAttributes="Bold"
+                                                                FontSize="12"
+                                                                HorizontalOptions="Center"
+                                                                Text="{Binding mrp}"
+                                                                TextColor="White" />
+                                                        </Border>
+                                                    </Grid>
+
+                                                    <Grid
+                                                        ColumnDefinitions="Auto,*"
+                                                        RowDefinitions="Auto,Auto,Auto"
+                                                        RowSpacing="5">
+                                                        <Label
+                                                            Grid.ColumnSpan="2"
+                                                            FontAttributes="Bold"
+                                                            FontFamily="PoppinsRegular"
+                                                            FontSize="12"
+                                                            Text="{Binding item_name}" />
+                                                        <Label
+                                                            Grid.Row="1"
+                                                            FontSize="10"
+                                                            Text="{Binding packing}" />
+                                                        <Label
+                                                            Grid.Row="2"
+                                                            FontAttributes="Bold"
+                                                            FontSize="14"
+                                                            Text="{Binding Ptr}"
+                                                            TextColor="{StaticResource OptCardDark}"
+                                                            VerticalOptions="Center" />
+                                                        <HorizontalStackLayout
+                                                            Grid.Row="1"
+                                                            Grid.RowSpan="2"
+                                                            Grid.Column="1"
+                                                            HorizontalOptions="End">
+                                                            <ImageButton
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=DecrementPurchaseQuantityCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                HeightRequest="30"
+                                                                IsVisible="{Binding IsMinusButtonVisible}"
+                                                                Source="minuscart.png"
+                                                                WidthRequest="30" />
+                                                            <Label
+                                                                HorizontalOptions="CenterAndExpand"
+                                                                HorizontalTextAlignment="Center"
+                                                                IsVisible="{Binding IsMinusButtonVisible}"
+                                                                Text="{Binding Qty}"
+                                                                VerticalOptions="Center" />
+                                                            <ImageButton
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=IncrementPurchaseQuantityCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                HeightRequest="30"
+                                                                Source="pluscart.png"
+                                                                WidthRequest="30" />
+                                                        </HorizontalStackLayout>
+                                                    </Grid>
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Grid>
+                        </VerticalStackLayout>
+                        <!--  End:: Popular Brand  -->
+
+                        <!--  Start:: Advertisement  -->
+                        <Border
+                            BackgroundColor="Transparent"
+                            HeightRequest="120"
+                            HorizontalOptions="FillAndExpand"
+                            StrokeShape="RoundRectangle 10"
+                            StrokeThickness="1">
+                            <Image Aspect="AspectFill" Source="https://erp9i.com/optmed/banner_one.png" />
+                        </Border>
+                        <!--  End:: Advertisement  -->
+
+                        <!--  Start:: Skin & hair care  -->
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsBold"
+                            FontSize="12"
+                            Text="Skin &amp; hair care" />
+
+                        <CollectionView ItemsSource="{Binding Categories}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout
+                                    HorizontalItemSpacing="10"
+                                    Orientation="Vertical"
+                                    Span="2"
+                                    VerticalItemSpacing="10" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ItemCategoryMaster">
+                                    <VerticalStackLayout>
+                                        <Border
+                                            HeightRequest="90"
+                                            StrokeShape="RoundRectangle 5"
+                                            StrokeThickness="0">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Offset="0.1" Color="LightPink" />
+                                                    <GradientStop Offset="1.0" Color="BlueViolet" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <!--<Image Aspect="AspectFill" Source="{Binding image_url}" />-->
+                                        </Border>
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Text="{Binding category}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <!--  End:: Skin & hair care  -->
+
+                        <!--  Start:: Featured Items  -->
+                        <!--<VerticalStackLayout Spacing="10">
+                        <Grid
+                            ColumnDefinitions="auto,*,auto"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="Center">
+                            <Grid Grid.Column="0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsBold"
+                                    FontSize="12"
+                                    Text="Featured" />
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="PoppinsBold"
+                                    FontSize="10"
+                                    Text="See All"
+                                    TextColor="{StaticResource OptCardDark}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SeeAllPopularCommand}" CommandParameter="{x:Static helpers:CuratedType.Featrues}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </Grid>
+                        <Grid HorizontalOptions="FillAndExpand" RowDefinitions="auto">
+                            <CollectionView ItemsSource="{Binding Featrues}">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type models:ItemMaster}">
+                                        <Border
+                                            Padding="15,10"
+                                            BackgroundColor="#FAFAFA"
+                                            StrokeShape="RoundRectangle 5"
+                                            StrokeThickness="0">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={StaticResource HomeViewModel}, Path=DetailPageNavCommand}" CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <Grid ColumnDefinitions="auto,*,auto" VerticalOptions="Start">
+                                                <Grid
+                                                    Grid.Column="0"
+                                                    HeightRequest="100"
+                                                    WidthRequest="100">
+                                                    <Border
+                                                        BackgroundColor="#e6e3e2"
+                                                        StrokeShape="RoundRectangle 50"
+                                                        StrokeThickness="0">
+                                                        <Image
+                                                            HeightRequest="150"
+                                                            Source="{Binding image_url}"
+                                                            WidthRequest="230" />
+                                                    </Border>
+                                                </Grid>
+                                                <VerticalStackLayout
+                                                    Grid.Column="1"
+                                                    Margin="5,10,0,0"
+                                                    VerticalOptions="Start">
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="13"
+                                                        Text="{Binding item_name}" />
+                                                    <Label
+                                                        FontAttributes="None"
+                                                        FontSize="12"
+                                                        Text="{Binding item_code}" />
+                                                    <HorizontalStackLayout Spacing="10">
+                                                        <Image
+                                                            HeightRequest="20"
+                                                            Source="time.png"
+                                                            WidthRequest="20" />
+                                                        <Label FontSize="12" Text="NA" />
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+                                                <VerticalStackLayout
+                                                    Grid.Column="2"
+                                                    Margin="0,10,0,0"
+                                                    VerticalOptions="Start">
+                                                    <Label
+                                                        Grid.Column="0"
+                                                        FontAttributes="Bold"
+                                                        FontSize="16"
+                                                        Text="{Binding mrp}"
+                                                        TextColor="#FF9E62"
+                                                        VerticalOptions="Start" />
+                                                    <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
+                                                        <ImageButton
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=DecrementPurchaseQuantityCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            HeightRequest="30"
+                                                            IsVisible="{Binding IsMinusButtonVisible}"
+                                                            Source="minus.png"
+                                                            WidthRequest="30" />
+                                                        <Label
+                                                            HorizontalOptions="CenterAndExpand"
+                                                            HorizontalTextAlignment="Center"
+                                                            IsVisible="{Binding IsMinusButtonVisible}"
+                                                            Text="{Binding qty}"
+                                                            VerticalOptions="Center" />
+                                                        <ImageButton
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=IncrementPurchaseQuantityCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            HeightRequest="30"
+                                                            Source="plus.png"
+                                                            WidthRequest="30" />
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </VerticalStackLayout>-->
+                        <!--  End:: Featured Brand  -->
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+
+        </Grid>
+        <Button
+            Margin="0,0,0,0"
+            BackgroundColor="{StaticResource OptCardDark}"
+            Command="{Binding OpenCreateInvoiceCommand}"
+            CornerRadius="30"
+            FontAttributes="Bold"
+            FontSize="24"
+            HeightRequest="60"
+            HorizontalOptions="Center"
+            Text="+"
+            TextColor="White"
+            VerticalOptions="End"
+            WidthRequest="60" />
+    </Grid>
+</ContentPage>

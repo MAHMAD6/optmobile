@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.InvoiceDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:OptMobile.Retailer.Control"
+    xmlns:converter="clr-namespace:OptMobile.Retailer.Converters"
+    xmlns:model="clr-namespace:OptMobile.Retailer.Models"
+    xmlns:viewModel="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="viewModel:InvoiceDetailsViewModel"
+    BackgroundColor="{StaticResource PageBackground}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <!--  Define Rows: One for the scrollable content and one for the fixed button  -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <!--  Content Row (Scrollable)  -->
+            <RowDefinition Height="Auto" />
+            <!--  Fixed Button Row  -->
+        </Grid.RowDefinitions>
+        <VerticalStackLayout>
+            <Grid Margin="10,5,10,5" ColumnDefinitions="Auto,*,Auto">
+                <Border
+                    BackgroundColor="White"
+                    HeightRequest="40"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ClosePageCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                    <Image
+                        HeightRequest="20"
+                        Source="back.png"
+                        WidthRequest="20" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Margin="0,10,10,10"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    Text="Invoice Details" />
+                <Border
+                    Grid.Column="2"
+                    BackgroundColor="White"
+                    HeightRequest="40"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExportPdfCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                    <Image
+                        HeightRequest="25"
+                        Source="exportpdf.png"
+                        WidthRequest="25" />
+                </Border>
+            </Grid>
+            <Border
+                Padding="10"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 5"
+                StrokeThickness="0">
+                <Grid ColumnDefinitions="*,*">
+                    <VerticalStackLayout Grid.Column="0">
+                        <Label
+                            FontSize="12"
+                            Text="{Binding Invoice.invoice_code, StringFormat='Invoice#: {0}'}"
+                            TextColor="#80848A" />
+                        <Label
+                            FontSize="12"
+                            Text="{Binding Invoice.due_date, StringFormat='Due Date: {0:dd-MM-yyyy}'}"
+                            TextColor="#80848A" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1">
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="End"
+                            Text="{Binding Invoice.invoice_date, StringFormat='Invoice Date: {0:dd-MM-yyyy}'}"
+                            TextColor="#80848A" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="End"
+                            Text="Unpaid"
+                            TextColor="#80848A" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!--  Client Section  -->
+            <Border
+                Margin="0,5,0,0"
+                Padding="10"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 10"
+                StrokeThickness="0">
+                <Grid
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="Auto,Auto,*"
+                    RowSpacing="10">
+                    <Label
+                        Grid.ColumnSpan="2"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        Text="{Binding Party.party_name}" />
+                    <Label
+                        Grid.Row="1"
+                        Text="{Binding Party.mobile}"
+                        TextColor="Blue"
+                        VerticalOptions="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding OnPhoneNumberTappedCommand}"
+                                CommandParameter="{Binding Party.mobile}"
+                                NumberOfTapsRequired="1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        Text="{Binding Party.city}"
+                        TextColor="Gray" />
+                    <Label
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        Text="{Binding Party.address_one}" />
+                </Grid>
+            </Border>
+        </VerticalStackLayout>
+
+        <ActivityIndicator
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center" />
+
+        <!--  Scrollable Content  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Margin="0,5,0,0">
+                <!--  Items Section  -->
+                <CollectionView
+                    Grid.Row="1"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="{Binding IsDataLoaded}"
+                    ItemsSource="{Binding ItemTransaction}"
+                    SelectionMode="Single"
+                    VerticalOptions="Start">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:SalesInvoiceTransaction">
+                            <Border
+                                Padding="10"
+                                BackgroundColor="White"
+                                StrokeShape="RoundRectangle 0"
+                                StrokeThickness="0">
+                                <VerticalStackLayout BackgroundColor="White" Spacing="10">
+                                    <!--  Tests Item  -->
+                                    <Grid
+                                        Padding="0,2"
+                                        ColumnDefinitions="50,*,Auto"
+                                        RowDefinitions="Auto,Auto">
+                                        <!--  Icon  -->
+                                        <Border
+                                            Grid.RowSpan="2"
+                                            Padding="5"
+                                            BackgroundColor="#DCE3F0"
+                                            StrokeShape="RoundRectangle 10"
+                                            StrokeThickness="0"
+                                            WidthRequest="40">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:InvoiceDetailsViewModel}}, Path=ItemDetailsCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    NumberOfTapsRequired="1" />
+                                            </Border.GestureRecognizers>
+                                            <Image Aspect="AspectFit" Source="wireframe.png" />
+                                        </Border>
+
+                                        <!--  Description  -->
+                                        <Label
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="{Binding item_name}"
+                                            TextColor="Black" />
+
+                                        <Grid
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            ColumnDefinitions="*,*,*">
+                                            <Label
+                                                FontSize="12"
+                                                Text="{Binding qty, StringFormat='Qty {0}'}"
+                                                TextColor="Gray" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="12"
+                                                Text="{Binding free_qty, StringFormat='Free {0}'}"
+                                                TextColor="Gray" />
+                                            <Label
+                                                Grid.Column="2"
+                                                FontSize="12"
+                                                Text="{Binding rate, StringFormat='Rate {0:C2}'}"
+                                                TextColor="Gray" />
+                                        </Grid>
+                                        <!--  Price  -->
+                                        <Label
+                                            Grid.Column="2"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            HorizontalOptions="End"
+                                            Text="{Binding grand_total}"
+                                            TextColor="Black" />
+                                    </Grid>
+
+                                    <!--  Separator  -->
+                                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Summary Section  -->
+        <VerticalStackLayout
+            Grid.Row="2"
+            Padding="10,15"
+            BackgroundColor="White"
+            Spacing="15">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    FontSize="14"
+                    Text="Subtotal"
+                    TextColor="Gray" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Text="{Binding Invoice.total_amount, StringFormat='{0:F2}'}" />
+            </Grid>
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    FontSize="14"
+                    Text="Total Tax"
+                    TextColor="Gray" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Text="{Binding Invoice.tax_amount}" />
+            </Grid>
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    FontSize="14"
+                    Text="Round Off"
+                    TextColor="Gray" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Text="{Binding Invoice.round_off}" />
+            </Grid>
+            <!--  Separator  -->
+            <BoxView HeightRequest="1" Color="#E0E0E0" />
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="TOTAL" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="{Binding Invoice.grand_total, StringFormat='{0:C2}'}"
+                    TextColor="Blue" />
+            </Grid>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

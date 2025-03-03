@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.PaymentInvoicePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:OptMobile.Retailer.Control"
+    xmlns:converter="clr-namespace:OptMobile.Retailer.Converters"
+    xmlns:helper="clr-namespace:OptMobile.Retailer.Helpers"
+    xmlns:model="clr-namespace:OptMobile.Retailer.Models"
+    xmlns:viewmodel="clr-namespace:OptMobile.Retailer.ViewModels"
+    x:DataType="viewmodel:PaymentInvoiceViewModel"
+    BackgroundColor="{StaticResource PageBackground}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BalanceAmountConverter x:Key="BalanceAmountConverter" />
+            <converter:DateTimeFormatConverter x:Key="DateTimeFormatConverter " />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="10">
+        <VerticalStackLayout>
+            <Grid Margin="10,5,10,5" ColumnDefinitions="Auto,*,Auto">
+                <Border
+                    BackgroundColor="White"
+                    HeightRequest="40"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ClosePageCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                    <Image
+                        HeightRequest="20"
+                        Source="back.png"
+                        WidthRequest="20" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Margin="0,10,10,10"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    Text="Select Invoice" />
+                <Border
+                    Grid.Column="2"
+                    BackgroundColor="White"
+                    HeightRequest="40"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CartPageNavigationCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                    <Image
+                        HeightRequest="25"
+                        Source="cart.png"
+                        WidthRequest="25" />
+                </Border>
+            </Grid>
+
+            <!--  Amount Section  -->
+            <Border
+                Margin="0,5,0,0"
+                Padding="5"
+                BackgroundColor="{StaticResource White}"
+                StrokeShape="RoundRectangle 0"
+                StrokeThickness="0">
+                <Grid
+                    Padding="10"
+                    ColumnDefinitions="Auto,*"
+                    RowDefinitions="*,*"
+                    RowSpacing="5">
+                    <Label
+                        Padding="0,0,10,0"
+                        FontAttributes="Bold"
+                        Text="Amount*"
+                        VerticalOptions="Center" />
+                    <Border
+                        Grid.Column="1"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 5"
+                        StrokeThickness="1">
+                        <control:BorderLessEntry
+                            x:Name="txtSearch"
+                            Margin="5,5"
+                            ClearButtonVisibility="WhileEditing"
+                            Keyboard="Numeric"
+                            Placeholder="0.00"
+                            PlaceholderColor="{AppThemeBinding Light={x:StaticResource Gray400},
+                                                               Dark={x:StaticResource Gray400}}"
+                            ReturnCommand="{Binding Calculate}"
+                            ReturnType="Next"
+                            Text="{Binding TotalAmount}" />
+                    </Border>
+                    <Label
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        FontAttributes="Bold"
+                        HorizontalOptions="End"
+                        Text="Current Balance: 1500" />
+                </Grid>
+            </Border>
+            <Label
+                Padding="10"
+                FontAttributes="Bold"
+                Text="INVOICE" />
+            <Label
+                Margin="10,0,0,0"
+                FontSize="12"
+                Text="Settle outstanding Invoice with the above Payment"
+                TextColor="Gray" />
+        </VerticalStackLayout>
+
+        <!--  Invoice List Section  -->
+        <CollectionView
+            Grid.Row="1"
+            BackgroundColor="Transparent"
+            HorizontalOptions="FillAndExpand"
+            ItemsSource="{Binding Invoices}"
+            SelectionMode="Single"
+            VerticalOptions="Start">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:SalesInvoiceMaster">
+                    <ScrollView>
+                        <VerticalStackLayout Padding="1">
+                            <Border
+                                Padding="5"
+                                BackgroundColor="White"
+                                StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PaymentInvoiceViewModel}}, Path=InvoiceDetailsCommand}" CommandParameter="{Binding invoice_id}" />
+                                </Border.GestureRecognizers>
+                                <Grid
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="50,*,Auto"
+                                    ColumnSpacing="5"
+                                    RowDefinitions="Auto,Auto,Auto"
+                                    RowSpacing="5">
+                                    <CheckBox Grid.RowSpan="2" IsChecked="{Binding ispick}">
+                                        <CheckBox.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PaymentInvoiceViewModel}}, Path=InvoiceSelectionCommand}" CommandParameter="{Binding .}" />
+                                        </CheckBox.GestureRecognizers>
+                                        <!--<CheckBox.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding ispick}"
+                                                TargetType="CheckBox"
+                                                Value="True">
+                                                <Setter Property="IsChecked" Value="{Binding ispick}" />
+                                            </DataTrigger>
+                                        </CheckBox.Triggers>-->
+                                    </CheckBox>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding invoice_code}"
+                                        TextColor="Black"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        Text="{Binding invoice_date, StringFormat='{0:dd-MM-yyyy}'}"
+                                        TextColor="#808080" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        HorizontalOptions="End"
+                                        Text="{Binding grand_total}"
+                                        TextColor="Black"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        FontSize="14"
+                                        HorizontalOptions="End"
+                                        Text="{Binding grand_total, Converter={StaticResource BalanceAmountConverter}}"
+                                        TextColor="{StaticResource OptCardDark}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.ColumnSpan="3"
+                                        FontSize="14"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="MR Name" />
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  Save Button at the Bottom  -->
+        <Border
+            Grid.Row="2"
+            BackgroundColor="White"
+            HeightRequest="60"
+            StrokeThickness="0">
+            <Button
+                Margin="10"
+                BackgroundColor="{StaticResource OptCardDark}"
+                Command="{Binding SavePaymentCommand}"
+                CornerRadius="10"
+                HeightRequest="50"
+                HorizontalOptions="Fill"
+                Text="Save"
+                TextColor="White"
+                VerticalOptions="Start" />
+        </Border>
+    </Grid>
+</ContentPage>

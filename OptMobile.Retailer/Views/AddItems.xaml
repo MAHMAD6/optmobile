@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OptMobile.Retailer.Views.AddItems"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="AddItems">
+    <Grid Padding="6,3" RowDefinitions="auto,auto,*,auto,auto">
+        <ImageButton
+            Background="White"
+            HorizontalOptions="Start"
+            Source="back.png"
+            VerticalOptions="Center" />
+        <Border
+            Background="#E6E1F4"
+            HorizontalOptions="End"
+            Stroke="Transparent"
+            StrokeShape="Rectangle 5">
+            <HorizontalStackLayout Margin="6,5">
+                <Image
+                    HeightRequest="30"
+                    Source="searchicon.svg"
+                    VerticalOptions="Center" />
+                <Entry
+                    Margin="12,0,40,0"
+                    FontFamily="PoppinsRegular"
+                    FontSize="14"
+                    Placeholder="Search by name or code"
+                    TextColor="Black" />
+                <Image
+                    Margin="10,0"
+                    HeightRequest="30"
+                    Source="scanicon.svg"
+                    VerticalOptions="Center" />
+                <Image
+                    Margin="8,0"
+                    HeightRequest="30"
+                    Source="micicon.svg"
+                    VerticalOptions="Center" />
+
+            </HorizontalStackLayout>
+        </Border>
+
+        <Button
+            Grid.Row="1"
+            Margin="1,10"
+            Padding="18,0"
+            Background="LightGray"
+            CornerRadius="20"
+            FontFamily="PoppinsRegular"
+            HorizontalOptions="End"
+            Text="+      Create new Item  "
+            TextColor="Black" />
+
+
+        <VerticalStackLayout Grid.Row="2">
+
+            <!--#region ITEM TEMPLATE WITH BATCH-->
+            <Grid ColumnDefinitions="auto,*" RowDefinitions="auto,auto">
+                <Border
+                    Grid.RowSpan="3"
+                    Grid.Column="1"
+                    Margin="8,2,17,2"
+                    Padding="0,-7"
+                    HorizontalOptions="End"
+                    Stroke="{DynamicResource Primary}"
+                    StrokeShape="RoundRectangle 3"
+                    StrokeThickness="2"
+                    VerticalOptions="Center">
+                    <Button
+                        Background="White"
+                        BorderColor="Transparent"
+                        FontFamily="PoppinsBold"
+                        FontSize="12"
+                        Text="ADD +"
+                        TextColor="{DynamicResource Primary}" />
+                </Border>
+
+                <Grid ColumnDefinitions="auto,auto,*" RowDefinitions="*,*">
+                    <Border
+                        Grid.RowSpan="2"
+                        Margin="4,0,8,10"
+                        Background="#F28908"
+                        HeightRequest="50"
+                        HorizontalOptions="Center"
+                        Stroke="#F28908"
+                        StrokeShape="RoundRectangle 8"
+                        VerticalOptions="Center"
+                        WidthRequest="50">
+                        <Label
+                            FontFamily="PoppinsBold"
+                            FontSize="35"
+                            HorizontalOptions="Center"
+                            Opacity="0.3"
+                            Text="S"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,10,0,0"
+                        FontFamily="PoppinsBold"
+                        FontSize="16"
+                        Text="Sample Item" />
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="2,2"
+                        Padding="8,4"
+                        Background="#DCF8BE"
+                        HorizontalOptions="Center"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 10"
+                        VerticalOptions="Center">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="1 Batch"
+                            TextColor="Green"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="8,2"
+                        Padding="0,-7"
+                        HorizontalOptions="Start"
+                        Stroke="Gray"
+                        StrokeShape="RoundRectangle 3"
+                        StrokeThickness="1"
+                        VerticalOptions="Center">
+                        <Button
+                            Background="White"
+                            BorderColor="Transparent"
+                            FontFamily="PoppinsBold"
+                            FontSize="12"
+                            Text="+  New Batch"
+                            TextColor="{DynamicResource Primary}" />
+                    </Border>
+                </Grid>
+
+                <!--  || BATCHES ||  -->
+                <Grid
+                    Grid.Row="1"
+                    Margin="60,20,10,10"
+                    ColumnDefinitions="auto,*"
+                    RowDefinitions="auto,auto,auto,auto,auto">
+
+
+                    <Label
+                        Grid.Row="0"
+                        FontFamily="PoppinsBold"
+                        FontSize="18"
+                        Text="Batch #1" />
+
+                    <Label
+                        Grid.Row="1"
+                        FontFamily="PoppinsRegular"
+                        FontSize="12"
+                        Text="Expiring in 608 day(s)"
+                        TextColor="DarkRed" />
+                    <Label
+                        Grid.Row="2"
+                        FontFamily="PoppinsRegular"
+                        FontSize="18"
+                        Text="₹ 120/PCS" />
+                    <HorizontalStackLayout Grid.Row="3">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            Text="STOCK:"
+                            TextColor="Gray" />
+                        <Label
+                            Margin="10,0"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            Text="38PCS"
+                            TextColor="Black" />
+                    </HorizontalStackLayout>
+                    <Grid
+                        Grid.Row="4"
+                        ColumnDefinitions="auto,*"
+                        RowDefinitions="auto,auto">
+                        <Label
+                            Grid.Column="0"
+                            Margin="0,0,20,0"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            FontSize="10"
+                            Text="Expiry Date"
+                            TextColor="Gray" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            FontSize="10"
+                            Text="Mfg Date"
+                            TextColor="Gray" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="0,0,20,0"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            Text="15 OCT 2026"
+                            TextColor="Black" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="PoppinsRegular"
+                            Text="15 OCT 2024"
+                            TextColor="Black" />
+                    </Grid>
+
+                </Grid>
+            </Grid>
+            <!--#endregion-->
+
+
+            <Grid
+                Margin="0,10,0,0"
+                ColumnDefinitions="auto,auto,*"
+                RowDefinitions="auto,auto,auto,auto">
+                <Border
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    Margin="8,2,17,2"
+                    Padding="0,-7"
+                    Background="Gainsboro"
+                    HorizontalOptions="End"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 3"
+                    StrokeThickness="2"
+                    VerticalOptions="Center">
+                    <Button
+                        Background="Gainsboro"
+                        BorderColor="Transparent"
+                        FontFamily="PoppinsBold"
+                        FontSize="12"
+                        Text="EDIT"
+                        TextColor="{DynamicResource Primary}" />
+                </Border>
+
+                <HorizontalStackLayout
+                    Grid.Row="2"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    Margin="8,12,17,2"
+                    HorizontalOptions="End">
+                    <Border
+                        Margin="0"
+                        Padding="0"
+                        Background="Transparent"
+                        HeightRequest="40"
+                        Stroke="Gainsboro"
+                        WidthRequest="30">
+                        <Label
+                            FontFamily="PoppinsBold"
+                            HorizontalOptions="Center"
+                            Text="-"
+                            TextColor="{DynamicResource Primary}"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Border
+                        Margin="0"
+                        Padding="0"
+                        Background="Transparent"
+                        HeightRequest="40"
+                        Stroke="Gainsboro"
+                        StrokeShape="Rectangle 6 0 6 0"
+                        WidthRequest="30">
+                        <Entry
+                            Background="Transparent"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Keyboard="Numeric"
+                            Text="1.0"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Border
+                        Background="Transparent"
+                        HeightRequest="40"
+                        Stroke="Gainsboro"
+                        StrokeShape="RoundRectangle 0 6 0 6"
+                        WidthRequest="30">
+                        <Label
+                            FontFamily="PoppinsBold"
+                            HorizontalOptions="Center"
+                            Text="+"
+                            TextColor="{DynamicResource Primary}"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                </HorizontalStackLayout>
+
+                <Border
+                    Grid.RowSpan="4"
+                    Grid.Column="0"
+                    Margin="4,0,8,0"
+                    Background="#F28908"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    Stroke="#F28908"
+                    StrokeShape="RoundRectangle 8"
+                    VerticalOptions="Start"
+                    WidthRequest="50">
+                    <Label
+                        FontFamily="PoppinsBold"
+                        FontSize="35"
+                        HorizontalOptions="Center"
+                        Opacity="0.3"
+                        Text="C"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontFamily="PoppinsBold"
+                    FontSize="16"
+                    HorizontalOptions="Start"
+                    Text="Sample Item 2" />
+
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    FontFamily="PoppinsRegular"
+                    FontSize="18"
+                    Text="₹ 120/PCS" />
+
+                <HorizontalStackLayout Grid.Row="4" Grid.Column="1">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsRegular"
+                        Text="STOCK:"
+                        TextColor="Gray" />
+                    <Label
+                        Margin="10,0"
+                        FontAttributes="Bold"
+                        FontFamily="PoppinsRegular"
+                        Text="38PCS"
+                        TextColor="Black" />
+                </HorizontalStackLayout>
+
+
+
+            </Grid>
+        </VerticalStackLayout>
+
+        <Grid
+            Grid.Row="3"
+            Margin="10,0,0,0"
+            ColumnDefinitions="auto,*"
+            RowDefinitions="auto,*">
+            <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                FontFamily="PoppinsBold"
+                FontSize="16"
+                HorizontalOptions="Start"
+                Text="Add more Details"
+                TextColor="{DynamicResource Primary}" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontFamily="PoppinsRegular"
+                FontSize="16"
+                HorizontalOptions="Start"
+                LineBreakMode="WordWrap"
+                Text="Additional charges, Round off..."
+                TextColor="Gray"
+                WidthRequest="230" />
+            <Button
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                Text="Generate Bill"
+                VerticalOptions="Center" />
+        </Grid>
+
+    </Grid>
+</ContentPage>
