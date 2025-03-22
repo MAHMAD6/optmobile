@@ -20,6 +20,9 @@ namespace OptMobile.Retailer
             Routing.RegisterRoute(nameof(PaymentInvoicePage), typeof(PaymentInvoicePage));
 
             Routing.RegisterRoute(nameof(CreateInvoicePage), typeof(CreateInvoicePage));
+            Routing.RegisterRoute(nameof(AddItems), typeof(AddItems));
+            Routing.RegisterRoute(nameof(CreateBatch), typeof(CreateBatch));
+            Routing.RegisterRoute(nameof(DistributorPage), typeof(DistributorPage));
         }
 
         protected override void OnNavigated(ShellNavigatedEventArgs args)

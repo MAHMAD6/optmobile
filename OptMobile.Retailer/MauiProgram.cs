@@ -71,6 +71,8 @@ namespace OptMobile.Retailer
 
             builder.Services.AddTransient<CreateInvoicePage>();
             builder.Services.AddTransient<AddItems>();
+            builder.Services.AddTransient<CreateBatch>();
+            builder.Services.AddTransient<DistributorPage>();
             #endregion
 
             #region(Register ViewModel =================================================)
@@ -87,6 +89,9 @@ namespace OptMobile.Retailer
             builder.Services.AddSingleton<PaymentInvoiceViewModel>();
             builder.Services.AddSingleton<UserAccountViewModel>();
             builder.Services.AddSingleton<CreateInvoiceViewModel>();
+            builder.Services.AddSingleton<CreateBatchViewModel>();
+            builder.Services.AddSingleton<AddItemsViewModel>();
+            builder.Services.AddSingleton<DistributionPageViewModel>();
             #endregion
 
             #region(Register Service ===================================================)
@@ -113,13 +118,7 @@ namespace OptMobile.Retailer
 #endif
             });
 
-            EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
-            {
-#if ANDROID
-                handler.PlatformView.Background = null; // Removes underline
-                handler.PlatformView.SetPadding(0, 0, 0, 0); // Adjust padding
-#endif
-            });
+           
 
 
 

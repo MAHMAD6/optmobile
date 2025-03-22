@@ -3,6 +3,7 @@
     x:Class="OptMobile.Retailer.Views.CreateInvoicePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:CC="clr-namespace:OptMobile.Retailer.CustomControls"
     xmlns:bottomsheet="http://pluginmauibottomsheet.com"
     xmlns:convert="clr-namespace:OptMobile.Retailer.Converters"
     xmlns:helpers="clr-namespace:OptMobile.Retailer.Helpers"
@@ -15,6 +16,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <convert:ExpandCollapseConverter x:Key="ExpandCollapseConverter" />
+            <convert:BoolToImageConverter x:Key="BoolToImageConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -54,7 +56,7 @@
                 <ImageButton
                     Grid.Column="2"
                     Margin="0,0,5,0"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=InvoiceSettingsCommand}"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CreateInvoiceViewModel}}, Path=InvoiceSettingsCommand}"
                     HeightRequest="25"
                     HorizontalOptions="End"
                     Source="createinvoicesettingsicon.png"
@@ -63,6 +65,7 @@
 
             </Grid>
             <!--#endregion-->
+
 
             <!--#region Index-->
             <Grid
@@ -81,7 +84,7 @@
                     Grid.RowSpan="2"
                     Grid.Column="1"
                     Background="{DynamicResource PageBackground}"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BaseViewModel}}, Path=InvoiceEditCommand}"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CreateInvoiceViewModel}}, Path=InvoiceEditCommand}"
                     FontAttributes="Bold"
                     HorizontalOptions="End"
                     Text="Edit"
@@ -91,16 +94,16 @@
 
             <bottomsheet:BottomSheet
                 Grid.RowSpan="10"
-                CurrentState="Medium"
+                CurrentState="Large"
                 HeightRequest="100"
                 IsCancelable="True"
                 IsDraggable="True"
                 IsOpen="{Binding IsEditIndexOpen}"
-                States="Medium">
+                States="Medium,Large">
                 <bottomsheet:BottomSheet.Content>
                     <bottomsheet:BottomSheetContent>
                         <bottomsheet:BottomSheetContent.ContentTemplate>
-                            <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                            <DataTemplate x:DataType="viewmodels:CreateInvoiceViewModel">
                                 <Grid
                                     Grid.Row="10"
                                     Margin="0,10,0,0"
@@ -126,7 +129,11 @@
                                         HeightRequest="25"
                                         HorizontalOptions="End"
                                         Source="closeicon.svg"
-                                        VerticalOptions="Center" />
+                                        VerticalOptions="Center">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CreateInvoiceViewModel}}, Path=InvoiceEditCommand}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
 
 
 
@@ -242,6 +249,7 @@
                                         FontFamily="PoppinsBold"
                                         FontSize="14"
                                         HorizontalOptions="Start"
+                                        IsVisible="{Binding AddPrefixVisible}"
                                         Text="Prefix"
                                         TextColor="Gray"
                                         VerticalOptions="Center" />
@@ -249,13 +257,15 @@
                                         Grid.Row="7"
                                         Grid.Column="0"
                                         Margin="0,0,4,0"
-                                        Padding="8,5"
+                                        Padding="10,5,0,0"
+                                        IsVisible="{Binding AddPrefixVisible}"
                                         StrokeShape="RoundRectangle 5"
                                         StrokeThickness="2">
-                                        <Entry
+                                        <CC:BorderLessEntry
                                             FontAttributes="Bold"
                                             FontFamily="PoppinsRegular"
                                             FontSize="14"
+                                            IsVisible="{Binding AddPrefixVisible}"
                                             Placeholder="BN/SL/" />
                                     </Border>
 
@@ -267,6 +277,7 @@
                                         FontFamily="PoppinsBold"
                                         FontSize="14"
                                         HorizontalOptions="Start"
+                                        IsVisible="{Binding AddPrefixVisible}"
                                         Text="Starting Serial Number"
                                         TextColor="Gray"
                                         VerticalOptions="Center" />
@@ -274,13 +285,15 @@
                                         Grid.Row="7"
                                         Grid.Column="1"
                                         Margin="4,0,0,0"
-                                        Padding="8,5"
+                                        Padding="8,5,0,0"
+                                        IsVisible="{Binding AddPrefixVisible}"
                                         StrokeShape="RoundRectangle 5"
                                         StrokeThickness="2">
-                                        <Entry
+                                        <CC:BorderLessEntry
                                             FontAttributes="Bold"
                                             FontFamily="PoppinsRegular"
                                             FontSize="14"
+                                            IsVisible="{Binding AddPrefixVisible}"
                                             Text="20" />
                                     </Border>
 
@@ -304,7 +317,11 @@
                                             HorizontalOptions="Start"
                                             Text="Add Prefix"
                                             TextColor="{DynamicResource Primary}"
-                                            VerticalOptions="Center" />
+                                            VerticalOptions="Center">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding TogglePrefixCommand}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
                                     </HorizontalStackLayout>
                                     <Label
                                         Grid.Row="8"
@@ -361,15 +378,16 @@
                     Stroke="LightGray"
                     StrokeThickness="1">
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ToggleBottomSheetCommand}" />
+                        <TapGestureRecognizer Command="{Binding SearchBottomSheetCommand}" />
                     </Border.GestureRecognizers>
-                    <HorizontalStackLayout>
+                    <HorizontalStackLayout HeightRequest="30">
                         <Image
                             HeightRequest="20"
                             Source="usericon.png"
+                            VerticalOptions="Center"
                             WidthRequest="20" />
-                        <Label
-                            Margin="10,0,0,0"
+                        <CC:BorderLessEntry
+                            Margin="10,-10,0,-10"
                             Text="INDEXIAL TECHNOLOGIES"
                             VerticalOptions="Center" />
                     </HorizontalStackLayout>
@@ -381,14 +399,14 @@
                     HeightRequest="100"
                     IsCancelable="True"
                     IsDraggable="True"
-                    IsOpen="False"
-                    States="Medium">
+                    IsOpen="{Binding IsSearchOpen}"
+                    States="Medium,Large">
 
 
                     <bottomsheet:BottomSheet.Content>
                         <bottomsheet:BottomSheetContent>
                             <bottomsheet:BottomSheetContent.ContentTemplate>
-                                <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                                <DataTemplate x:DataType="viewmodels:CreateInvoiceViewModel">
 
                                     <Grid
                                         Grid.Row="10"
@@ -461,14 +479,22 @@
                     <Image
                         Margin="0,0,5,0"
                         HeightRequest="20"
-                        Source="uparrowicon.svg"
-                        VerticalOptions="Center" />
+                        Source="{Binding IsCollectionVisible, Converter={StaticResource BoolToImageConverter}}"
+                        VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCollectionCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
                     <Label
                         Grid.Column="1"
                         FontAttributes="Bold"
                         FontFamily="PoppinsMedium"
                         Text="ITEMS"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCollectionCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
                     <Label
                         Grid.Column="2"
                         FontAttributes="Bold"
@@ -479,6 +505,7 @@
                     <Button
                         Grid.Column="3"
                         BackgroundColor="White"
+                        Command="{Binding AddItemCommand}"
                         FontAttributes="Bold"
                         FontFamily="PoppinsMedium"
                         Text="+ Item"
@@ -486,7 +513,12 @@
                         VerticalOptions="Center" />
                 </Grid>
 
-                <CollectionView x:Name="collection" Grid.Row="3">
+                <CollectionView
+                    x:Name="collection"
+                    Grid.Row="3"
+                    BindingContext="{Binding}"
+                    IsVisible="{Binding IsCollectionVisible}"
+                    TranslationY="{Binding CollectionTranslationY}">
                     <CollectionView.EmptyView>
                         <Button
                             BackgroundColor="#E6E1F4"
@@ -546,8 +578,9 @@
                                     HeightRequest="35"
                                     StrokeShape="RoundRectangle 20">
                                     <Button
-                                        Margin="0"
+                                        Margin="0,-3,0,0"
                                         BackgroundColor="Transparent"
+                                        Command="{Binding Source={x:Reference collection}, Path=BindingContext.EditItemCommand}"
                                         FontAttributes="Bold"
                                         FontFamily="PoppinsRegular"
                                         FontSize="12"
@@ -592,13 +625,15 @@
                                     HeightRequest="100"
                                     IsCancelable="True"
                                     IsDraggable="True"
-                                    IsOpen="False"
-                                    States="Large">
+                                    IsOpen="{Binding Source={x:Reference collection}, Path=BindingContext.IsEditItemOpen, Mode=TwoWay}"
+                                    States="Large,Medium">
                                     <bottomsheet:BottomSheet.Content>
                                         <bottomsheet:BottomSheetContent>
                                             <bottomsheet:BottomSheetContent.ContentTemplate>
-                                                <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                                                <DataTemplate x:DataType="viewmodels:CreateInvoiceViewModel">
+
                                                     <Grid
+                                                        Padding="10"
                                                         BackgroundColor="White"
                                                         ColumnDefinitions="*,*"
                                                         RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto">
@@ -623,7 +658,8 @@
                                                                     WidthRequest="20" />
                                                             </Border>
                                                             <Label
-                                                                Margin="23,10,10,10"
+                                                                Grid.Column="1"
+                                                                Margin="18,10,10,10"
                                                                 FontAttributes="Bold"
                                                                 FontSize="20"
                                                                 HorizontalOptions="Start"
@@ -634,7 +670,7 @@
                                                                 HeightRequest="35"
                                                                 StrokeShape="RoundRectangle 20">
                                                                 <Button
-                                                                    Margin="0"
+                                                                    Margin="0,-2,0,0"
                                                                     BackgroundColor="Transparent"
                                                                     FontAttributes="Bold"
                                                                     FontFamily="PoppinsRegular"
@@ -657,7 +693,7 @@
                                                         <Border
                                                             Grid.Row="2"
                                                             Grid.ColumnSpan="2"
-                                                            Padding="10,0,5,0"
+                                                            Padding="10,5,0,0"
                                                             StrokeShape="RoundRectangle 8"
                                                             StrokeThickness="2">
                                                             <Grid ColumnDefinitions="auto,*,auto">
@@ -668,7 +704,7 @@
                                                                     FontSize="20"
                                                                     Text="₹"
                                                                     VerticalOptions="Center" />
-                                                                <Entry
+                                                                <CC:BorderLessEntry
                                                                     Grid.Column="1"
                                                                     FontFamily="PoppinsBold"
                                                                     FontSize="16"
@@ -688,10 +724,10 @@
                                                         <Border
                                                             Grid.Row="4"
                                                             Margin="0,0,3,0"
-                                                            Padding="10,0,5,0"
+                                                            Padding="10,5,0,0"
                                                             StrokeShape="RoundRectangle 8"
                                                             StrokeThickness="2">
-                                                            <Entry
+                                                            <CC:BorderLessEntry
                                                                 Grid.Column="1"
                                                                 FontFamily="PoppinsBold"
                                                                 FontSize="16"
@@ -711,7 +747,7 @@
                                                             Grid.Row="4"
                                                             Grid.Column="1"
                                                             Margin="3,0,0,0"
-                                                            Padding="10,0,5,0"
+                                                            Padding="10,5,0,0"
                                                             StrokeShape="RoundRectangle 8"
                                                             StrokeThickness="2">
                                                             <Grid>
@@ -745,11 +781,11 @@
                                                             Grid.Row="6"
                                                             Grid.ColumnSpan="2"
                                                             Margin="3,0,0,0"
-                                                            Padding="10,0,5,0"
+                                                            Padding="10,5,0,0"
                                                             StrokeShape="RoundRectangle 8"
                                                             StrokeThickness="2">
                                                             <Grid ColumnDefinitions="*,auto,auto">
-                                                                <Entry
+                                                                <CC:BorderLessEntry
                                                                     Grid.Column="0"
                                                                     FontAttributes="Bold"
                                                                     FontFamily="PoppinsMedium"
@@ -768,7 +804,7 @@
                                                                 <Border
                                                                     Grid.Column="2"
                                                                     Margin="0,0,10,0"
-                                                                    Padding="10,0,5,0"
+                                                                    Padding="10,2,5,0"
                                                                     HeightRequest="35"
                                                                     StrokeShape="RoundRectangle 8"
                                                                     StrokeThickness="2">
@@ -805,7 +841,7 @@
                                                             Grid.Row="8"
                                                             Grid.ColumnSpan="2"
                                                             Margin="3,0,0,0"
-                                                            Padding="10,0,5,0"
+                                                            Padding="10,5,0,0"
                                                             StrokeShape="RoundRectangle 8"
                                                             StrokeThickness="2">
                                                             <Grid>
@@ -950,6 +986,7 @@
                     Grid.Row="0"
                     Margin="0,10,10,0"
                     BackgroundColor="Transparent"
+                    Command="{Binding AdditionChargesListCommand}"
                     FontAttributes="Bold"
                     FontFamily="PoppinsMedium"
                     HorizontalOptions="End"
@@ -962,87 +999,114 @@
                     Padding="5,0"
                     BackgroundColor="White"
                     ColumnDefinitions="auto,*,auto"
-                    IsVisible="False">
+                    IsVisible="{Binding IsAdditionalChargesListOpen, Mode=TwoWay}">
                     <Image
                         Margin="0,0,5,0"
                         HeightRequest="20"
                         Source="uparrowicon.svg"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCollectionAdditionalChargesCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
                     <Label
                         Grid.Column="1"
                         FontAttributes="Bold"
                         FontFamily="PoppinsMedium"
                         Text="ADD ADDITIONAL CHARGES"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCollectionAdditionalChargesCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
                     <Button
                         Grid.Column="3"
                         BackgroundColor="White"
+                        Command="{Binding AdditionChargesCommand}"
                         FontAttributes="Bold"
                         FontFamily="PoppinsMedium"
                         Text="+"
                         TextColor="{DynamicResource Primary}"
                         VerticalOptions="Center" />
                 </Grid>
-                <Grid
+                <CollectionView
+                    x:Name="AdditionalChargesCollection"
                     Grid.Row="1"
-                    Margin="0,0,0,10"
-                    Padding="5,0"
-                    BackgroundColor="White"
-                    ColumnDefinitions="auto,*,auto,auto"
-                    IsVisible="False"
-                    RowDefinitions="auto,auto">
-                    <Image HeightRequest="18" Source="cancelicon.svg" />
-                    <HorizontalStackLayout Grid.Column="1">
-                        <Entry
-                            Margin="10,0"
-                            HorizontalOptions="Start"
-                            Text="Loading"
-                            WidthRequest="80" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout Grid.Column="2">
-                        <Label
-                            Margin="10,0"
-                            Text="₹"
-                            VerticalOptions="Center" />
-                        <Entry Text="50" WidthRequest="80" />
-                    </HorizontalStackLayout>
+                    BindingContext="{Binding}"
+                    IsVisible="{Binding IsAdditionChargesVisible}"
+                    ItemsSource="{Binding AdditionalChargesList}"
+                    TranslationY="{Binding CollectionAdditionalChargesTranslationY}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Margin="0,0,0,0"
+                                Padding="5,0"
+                                BackgroundColor="White"
+                                ColumnDefinitions="auto,*,*,*"
+                                IsVisible="{Binding IsVisible, Mode=TwoWay}"
+                                RowDefinitions="auto,auto">
+                                <Image HeightRequest="18" Source="cancelicon.svg" />
+                                <HorizontalStackLayout Grid.Column="1">
+                                    <Entry
+                                        Margin="10,0"
+                                        HorizontalOptions="Start"
+                                        Text="{Binding LoadingText}"
+                                        WidthRequest="80" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Grid.Column="2">
+                                    <Label
+                                        Margin="10,0"
+                                        Text="₹"
+                                        VerticalOptions="Center" />
+                                    <Entry Text="{Binding Amount}" WidthRequest="80" />
+                                </HorizontalStackLayout>
 
-                    <Border
-                        Grid.Column="3"
-                        Margin="3,0,0,0"
-                        Padding="10,0,5,0"
-                        Stroke="Transparent"
-                        StrokeShape="RoundRectangle 8"
-                        WidthRequest="100">
-                        <Grid Margin="0,-30">
-                            <Label
-                                Margin="0"
-                                Padding="0"
-                                FontAttributes="Bold"
-                                FontFamily="PoppinsMedium"
-                                FontSize="12"
-                                HorizontalOptions="Start"
-                                Text="GST 290%"
-                                TextColor="Gray"
-                                VerticalOptions="Center" />
-                            <Picker Opacity="0" WidthRequest="300" />
-                            <Image
-                                Margin="0,0,3,0"
-                                HeightRequest="20"
-                                HorizontalOptions="End"
-                                Rotation="180"
-                                Source="uparrowicon.svg" />
-                        </Grid>
-                    </Border>
-                    <Border
-                        Grid.Row="1"
-                        Grid.ColumnSpan="4"
-                        Padding="4,4"
-                        BackgroundColor="White"
-                        Stroke="Transparent">
-                        <Label HorizontalOptions="End" Text="Amount incl of tax - ₹ 188.0" />
-                    </Border>
-                </Grid>
+                                <Border
+                                    Grid.Column="3"
+                                    Margin="3,0,0,0"
+                                    Padding="10,0,5,0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 8"
+                                    WidthRequest="100">
+                                    <Grid Margin="0,0">
+                                        <Label
+                                            Margin="0"
+                                            Padding="0"
+                                            FontAttributes="Bold"
+                                            FontFamily="PoppinsMedium"
+                                            FontSize="12"
+                                            HorizontalOptions="Start"
+                                            Text="{Binding TaxRate}"
+                                            TextColor="Gray"
+                                            VerticalOptions="Center" />
+                                        <Border
+                                            Grid.Column="1"
+                                            Padding="8,0"
+                                            Stroke="Gainsboro"
+                                            StrokeShape="RoundRectangle 6"
+                                            StrokeThickness="2">
+                                            <Picker Opacity="0" WidthRequest="300" />
+                                        </Border>
+                                        <Image
+                                            Margin="0,0,3,0"
+                                            HeightRequest="20"
+                                            HorizontalOptions="End"
+                                            Rotation="180"
+                                            Source="uparrowicon.svg" />
+                                    </Grid>
+                                </Border>
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="4"
+                                    Padding="4,4"
+                                    BackgroundColor="White"
+                                    Stroke="Transparent">
+                                    <Label HorizontalOptions="End" Text="{Binding TotalAmount}" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
                 <!--#endregion-->
 
 
@@ -1051,6 +1115,7 @@
                     Grid.Row="1"
                     Margin="0,0,10,0"
                     BackgroundColor="Transparent"
+                    Command="{Binding DiscountListCommand}"
                     FontAttributes="Bold"
                     FontFamily="PoppinsMedium"
                     HorizontalOptions="End"
@@ -1063,7 +1128,7 @@
                     Padding="5,0"
                     BackgroundColor="White"
                     ColumnDefinitions="auto,*,auto,auto"
-                    IsVisible="False">
+                    IsVisible="{Binding IsDiscountListOpen, Mode=TwoWay}">
                     <Image HeightRequest="18" Source="cancelicon.svg" />
                     <HorizontalStackLayout Grid.Column="1">
                         <Label
@@ -1094,6 +1159,7 @@
                     Grid.Row="2"
                     Margin="0,-0,10,0"
                     BackgroundColor="Transparent"
+                    Command="{Binding RoundOffCommand}"
                     FontAttributes="Bold"
                     FontFamily="PoppinsMedium"
                     HorizontalOptions="End"
@@ -1106,7 +1172,7 @@
                     Padding="5,0"
                     BackgroundColor="White"
                     ColumnDefinitions="auto,auto,auto,*,auto"
-                    IsVisible="False">
+                    IsVisible="{Binding IsRoundOpen}">
                     <Image HeightRequest="18" Source="cancelicon.svg" />
                     <HorizontalStackLayout Grid.Column="1" Margin="10,0,0,0">
                         <Label
@@ -1188,7 +1254,7 @@
                 Margin="0,10,0,5"
                 Padding="8,10"
                 BackgroundColor="White"
-                ColumnDefinitions="*,80"
+                ColumnDefinitions="*,auto"
                 HeightRequest="50">
                 <Label
                     FontAttributes="Bold"
@@ -1201,23 +1267,19 @@
                     <HorizontalStackLayout>
                         <Label
                             Margin="0,0,6,0"
-                            FontAttributes="Bold"
                             FontFamily="PoppinsMedium"
                             FontSize="16"
                             HorizontalOptions="Start"
                             Text="₹"
                             VerticalOptions="Center" />
                         <Entry
-                            Margin="4,0"
+                            Margin="4,-10,0,-6"
                             FontAttributes="Bold"
                             FontFamily="PoppinsMedium"
                             HorizontalOptions="End"
-                            Text="1230.00"
-                            VerticalOptions="Center" />
-                        <BoxView
-                            BackgroundColor="Black"
-                            HeightRequest="1"
-                            HorizontalOptions="Fill" />
+                            Text="900.00"
+                            VerticalOptions="Center"
+                            WidthRequest="120" />
                     </HorizontalStackLayout>
                 </Border>
             </Grid>
@@ -1238,7 +1300,7 @@
                     Margin="0,5,0,5"
                     Padding="10,10"
                     BackgroundColor="White"
-                    ColumnDefinitions="*,80"
+                    ColumnDefinitions="*,auto"
                     HeightRequest="50">
                     <Label
                         FontFamily="PoppinsMedium"
@@ -1250,21 +1312,19 @@
                         <HorizontalStackLayout>
                             <Label
                                 Margin="0,0,6,0"
-                                FontAttributes="Bold"
                                 FontFamily="PoppinsMedium"
                                 FontSize="16"
                                 HorizontalOptions="Start"
                                 Text="₹"
                                 VerticalOptions="Center" />
                             <Entry
-                                Margin="4,0"
+                                Margin="4,-10,0,-6"
+                                FontAttributes="Bold"
+                                FontFamily="PoppinsMedium"
                                 HorizontalOptions="End"
-                                Text="130.00"
-                                VerticalOptions="Center" />
-                            <BoxView
-                                BackgroundColor="Black"
-                                HeightRequest="1"
-                                HorizontalOptions="Fill" />
+                                Text="900.00"
+                                VerticalOptions="Center"
+                                WidthRequest="120" />
                         </HorizontalStackLayout>
                     </Border>
                 </Grid>
@@ -1272,34 +1332,35 @@
                     Margin="0,5,0,5"
                     Padding="10,10"
                     BackgroundColor="White"
-                    ColumnDefinitions="*,80"
+                    ColumnDefinitions="*,auto"
                     HeightRequest="50">
                     <Label
                         FontAttributes="Bold"
                         FontFamily="PoppinsMedium"
                         FontSize="16"
                         HorizontalOptions="Start"
-                        Text="Balance"
+                        Text="Balance Amount"
                         TextColor="Green"
                         VerticalOptions="Center" />
                     <Border Grid.Column="1" Stroke="Transparent">
                         <HorizontalStackLayout>
                             <Label
                                 Margin="0,0,6,0"
-                                FontAttributes="Bold"
                                 FontFamily="PoppinsMedium"
                                 FontSize="16"
                                 HorizontalOptions="Start"
                                 Text="₹"
                                 VerticalOptions="Center" />
                             <Label
-                                Margin="4,0"
+                                Margin="4,0,8,0"
                                 FontAttributes="Bold"
                                 FontFamily="PoppinsMedium"
                                 HorizontalOptions="End"
+                                HorizontalTextAlignment="End"
                                 Text="1500.00"
                                 TextColor="Green"
-                                VerticalOptions="Center" />
+                                VerticalOptions="Center"
+                                WidthRequest="120" />
                         </HorizontalStackLayout>
                     </Border>
                 </Grid>
@@ -1367,7 +1428,11 @@
                             HeightRequest="20"
                             HorizontalOptions="End"
                             Rotation="90"
-                            Source="uparrowicon.svg" />
+                            Source="uparrowicon.svg">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectBankCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
                     </HorizontalStackLayout>
                 </Grid>
 
@@ -1376,14 +1441,14 @@
                     CurrentState="Medium"
                     IsCancelable="True"
                     IsDraggable="True"
-                    IsOpen="False"
-                    States="Medium">
+                    IsOpen="True"
+                    States="Medium,Large">
 
 
                     <bottomsheet:BottomSheet.Content>
                         <bottomsheet:BottomSheetContent>
                             <bottomsheet:BottomSheetContent.ContentTemplate>
-                                <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                                <DataTemplate x:DataType="viewmodels:CreateInvoiceViewModel">
                                     <Grid RowDefinitions="auto,*,auto">
 
                                         <Grid
@@ -1486,28 +1551,29 @@
                 <!--#region Notes-->
                 <Grid
                     Grid.Row="2"
-                    Margin="0,0,0,10"
+                    Margin="0,10,0,10"
                     Padding="5,0"
                     BackgroundColor="White"
                     ColumnDefinitions="auto,*"
-                    IsVisible="False">
+                    IsVisible="{Binding IsNoteOpen}">
                     <Image
                         Margin="6,0,10,0"
                         HeightRequest="18"
                         Source="cancelicon.svg" />
                     <Border
                         Grid.Column="1"
-                        Padding="8,0"
+                        Padding="8,0,0,0"
                         Stroke="Gainsboro"
                         StrokeShape="RoundRectangle 6"
                         StrokeThickness="2">
-                        <Entry Placeholder="Add your notes here" />
+                        <CC:BorderLessEntry Placeholder="Add your notes here" />
                     </Border>
                 </Grid>
 
                 <Button
                     Margin="0,5"
                     BackgroundColor="Transparent"
+                    Command="{Binding NotesCommand}"
                     FontAttributes="Bold"
                     FontFamily="PoppinsMedium"
                     HorizontalOptions="End"
@@ -1537,6 +1603,7 @@
                     TextColor="{DynamicResource Primary}" />
                 <Button
                     Grid.Column="1"
+                    Command="{Binding DistributePageCommand}"
                     CornerRadius="0"
                     FontAttributes="Bold"
                     FontFamily="PoppinsRegular"
